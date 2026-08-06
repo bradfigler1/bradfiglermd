@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brad Figler MD FACS — Genitourinary Reconstructive Surgery</title>
+    <!-- Google Fonts for typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300&display=swap" rel="stylesheet">
+    <!-- FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary-navy: #13294B;
+            --primary-navy-dark: #0a182f;
+            --carolina-blue: #4B9CD3;
+            --carolina-blue-hover: #3582b5;
+            --text-dark: #2c3e50;
+            --text-muted: #556575;
+            --bg-light: #f8fafc;
+            --white: #ffffff;
+            --border-color: #e2e8f0;
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto;
+            color: var(--text-dark);
+            background-color: var(--white);
+            line-height: 1.6;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Merriweather', serif, Georgia, serif;
+            color: var(--primary-navy);
+            font-weight: 700;
+        }
+
+        a {
+            text-decoration: none;
+            color: var(--carolina-blue);
+            transition: var(--transition);
+        }
+
+        a:hover {
+            color: var(--primary-navy);
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header & Navigation */
+        header {
+            background-color: var(--white);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 0;
+        }
+
+        .brand-logo {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .brand-name {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--primary-navy);
+            font-family: 'Merriweather', serif;
+        }
+
+        .brand-title {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            font-weight: 500;
+            letter-spacing: 0.5px;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+
+        .nav-links a {
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: var(--text-dark);
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            color: var(--carolina-blue);
+        }
+
+        .mobile-toggle {
+            display: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--primary-navy);
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, var(--primary-navy) 0%, var(--primary-navy-dark) 100%);
+            color: var(--white);
+            padding: 80px 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-grid {
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            gap: 40px;
+            align-items: center;
+        }
+
+        .hero-content h1 {
+            font-size: 2.75rem;
+            color: var(--white);
+            line-height: 1.2;
+            margin-bottom: 20px;
+        }
+
+        .hero-content p {
+            font-size: 1.15rem;
+            color: #cbd5e1;
+            margin-bottom: 32px;
+            font-weight: 300;
+        }
+
+        .hero-image-wrapper {
+            display: flex;
+            justify-content: center;
+            position: relative;
+        }
+
+        .hero-image-wrapper::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border: 4px solid var(--carolina-blue);
+            top: 15px;
+            left: 15px;
+            border-radius: 8px;
+            z-index: 1;
+        }
+
+        .hero-image {
+            width: 100%;
+            max-width: 380px;
+            height: auto;
+            border-radius: 8px;
+            object-fit: cover;
+            position: relative;
+            z-index: 2;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Section Commons */
+        section {
+            padding: 80px 0;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .section-title h2 {
+            font-size: 2.25rem;
+            margin-bottom: 15px;
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-title h2::after {
+            content: '';
+            position: absolute;
+            width: 60px;
+            height: 3px;
+            background-color: var(--carolina-blue);
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .section-title p {
+            color: var(--text-muted);
+            max-width: 700px;
+            margin: 0 auto;
+            font-size: 1.05rem;
+        }
+
+        /* Expertise Section */
+        .expertise-section {
+            background-color: var(--white);
+        }
+
+        .expertise-lead-text {
+            font-size: 1.1rem;
+            color: var(--text-dark);
+            line-height: 1.8;
+            margin-bottom: 40px;
+            font-family: 'Merriweather', serif;
+            font-weight: 300;
+            border-left: 4px solid var(--carolina-blue);
+            padding-left: 20px;
+        }
+
+        .specializations-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+            margin-top: 40px;
+        }
+
+        .spec-card {
+            background: var(--bg-light);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 24px;
+            transition: var(--transition);
+        }
+
+        .spec-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
+            border-color: var(--carolina-blue);
+        }
+
+        .spec-card i {
+            font-size: 1.5rem;
+            color: var(--carolina-blue);
+            margin-bottom: 15px;
+        }
+
+        .spec-card h3 {
+            font-size: 1.15rem;
+            margin-bottom: 10px;
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+        }
+
+        .spec-card p {
+            font-size: 0.92rem;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
+        /* Background Section */
+        .background-section {
+            background-color: var(--bg-light);
+            border-top: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .bg-content-box {
+            background: var(--white);
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02);
+            border: 1px solid var(--border-color);
+        }
+
+        .bg-content-box p {
+            margin-bottom: 20px;
+            line-height: 1.8;
+            color: var(--text-dark);
+        }
+
+        .bg-content-box p:last-child {
+            margin-bottom: 0;
+        }
+
+        /* Videos Educational Library Section */
+        .videos-section {
+            background-color: var(--white);
+        }
+
+        .channel-cta-banner {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+            background: var(--bg-light);
+            padding: 50px 30px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02);
+        }
+
+        .channel-cta-banner p {
+            margin-bottom: 25px;
+            color: var(--text-muted);
+            font-size: 1.1rem;
+        }
+
+        .btn-primary {
+            background-color: var(--carolina-blue);
+            color: var(--white);
+            padding: 14px 28px;
+            border-radius: 6px;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            text-align: center;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-navy);
+            color: var(--white);
+        }
+
+        /* Research & Publications Section */
+        .research-section {
+            background-color: var(--bg-light);
+            border-top: 1px solid var(--border-color);
+        }
+
+        .research-card {
+            background: var(--white);
+            border-radius: 8px;
+            padding: 40px;
+            border: 1px solid var(--border-color);
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 40px;
+            align-items: center;
+        }
+
+        .research-details h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+        }
+
+        .research-details p {
+            color: var(--text-muted);
+            margin-bottom: 20px;
+            line-height: 1.7;
+        }
+
+        .research-action {
+            display: flex;
+            justify-content: center;
+        }
+
+        .btn-pubmed {
+            background-color: #3b82f6;
+            color: var(--white);
+            padding: 14px 28px;
+            border-radius: 6px;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            text-align: center;
+            box-shadow: 0 4px 6px -1px rgba(59, 130, 246, 0.3);
+        }
+
+        .btn-pubmed:hover {
+            background-color: #2563eb;
+            color: var(--white);
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--primary-navy-dark);
+            color: #cbd5e1;
+            padding: 60px 0 30px 0;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-col h4 {
+            color: var(--white);
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+        }
+
+        .footer-col p {
+            font-size: 0.9rem;
+            line-height: 1.7;
+            margin-bottom: 15px;
+        }
+
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+
+        .footer-links a {
+            color: #94a3b8;
+            font-size: 0.9rem;
+        }
+
+        .footer-links a:hover {
+            color: var(--carolina-blue);
+        }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 25px;
+            text-align: center;
+            font-size: 0.85rem;
+            color: #94a3b8;
+        }
+
+        .footer-badge-container {
+            margin-top: 20px;
+            text-align: left;
+        }
+
+        .footer-badge-container img {
+            max-height: 45px;
+            width: auto;
+            transition: var(--transition);
+        }
+
+        .footer-badge-container img:hover {
+            opacity: 0.85;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .hero-grid {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+            .hero-image-wrapper {
+                margin-top: 30px;
+            }
+            .research-card {
+                grid-template-columns: 1fr;
+                gap: 25px;
+            }
+            .footer-grid {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+                flex-direction: column;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background: var(--white);
+                padding: 20px;
+                box-shadow: 0 10px 15px rgba(0,0,0,0.05);
+                border-top: 1px solid var(--border-color);
+            }
+            .nav-links.active {
+                display: flex;
+            }
+            .mobile-toggle {
+                display: block;
+            }
+            .hero-content h1 {
+                font-size: 2.1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header & Navigation -->
+    <header>
+        <div class="container navbar">
+            <a href="index.html" class="brand-logo">
+                <span class="brand-name">Brad Figler MD FACS</span>
+                <span class="brand-title">Genitourinary Reconstructive Surgery</span>
+            </a>
+            <nav>
+                <ul class="nav-links" id="navLinks">
+                    <li><a href="index.html#home" class="active">Home</a></li>
+                    <li><a href="index.html#expertise">Expertise</a></li>
+                    <li><a href="index.html#background">Background</a></li>
+                    <li><a href="index.html#videos">Videos</a></li>
+                    <li><a href="index.html#research">Publications</a></li>
+                    <li><a href="resources1.html">Patient Resources</a></li>
+                </ul>
+            </nav>
+            <div class="mobile-toggle" id="mobileToggle">
+                <i class="fas fa-bars"></i>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="container hero-grid">
+            <div class="hero-content">
+                <h1>Leader in Complex Genitourinary Reconstructive Surgery</h1>
+                <p>An experienced, innovative surgeon focused on restoring function, form and quality of life.</p>
+            </div>
+            <div class="hero-image-wrapper">
+                <img src="https://www.med.unc.edu/urology/wp-content/uploads/sites/637/2018/04/figler_2023.png" alt="Brad Figler MD FACS" class="hero-image">
+            </div>
+        </div>
+    </section>
+
+    <!-- Expertise Section -->
+    <section id="expertise" class="expertise-section">
+        <div class="container">
+            <div class="section-title">
+                <h2>Expertise</h2>
+                <p>Patient-centered approach to complex anatomical and functional challenges.</p>
+            </div>
+
+            <div class="expertise-lead-text">
+                Dr. Figler is a board-certified Urologist and leader in the field of Genitourinary Reconstruction. Dr. Figler’s practice specializes in complex genital reconstruction, including urethral reconstruction (for strictures and fistulas), genital skin deficiency (after infection and trauma), and penile/genital cancer.
+            </div>
+
+            <div class="specializations-grid">
+                <div class="spec-card">
+                    <i class="fas fa-notes-medical"></i>
+                    <h3>Urethral Strictures</h3>
+                    <p>Offers all treatment modalities, including dilation, Optilume and urethroplasty. Management of complex strictures after trauma, radiation, hypospadias repair and failed urethroplasty.</p>
+                </div>
+                <div class="spec-card">
+                    <i class="fas fa-procedures"></i>
+                    <h3>Rectourethral Fistula</h3>
+                    <p>Comprehensive perineal reconstruction of complex rectourethral fistulas after trauma and radiation.</p>
+                </div>
+                <div class="spec-card">
+                    <i class="fas fa-shield-alt"></i>
+                    <h3>Lichen Sclerosus</h3>
+                    <p>Urethroplasty and advanced tissue transfer techniques for simple and complex cases.</p>
+                </div>
+                <div class="spec-card">
+                    <i class="fas fa-user-injured"></i>
+                    <h3>Buried Penis</h3>
+                    <p>Comprehensive patient-centered approach focused on functional improvement.</p>
+                </div>
+                <div class="spec-card">
+                    <i class="fas fa-ribbon"></i>
+                    <h3>Penile / Genital Cancer</h3>
+                    <p>Collaborative multi-specialty care including squamous cell carcinoma (SCC) and Extramammary Paget’s Disease (EMPD) in men and women. Partnering with uro-oncology and Mohs surgery to maximize cancer cure, preserve genital tissue and protect quality of life.</p>
+                </div>
+                <div class="spec-card">
+                    <i class="fas fa-venus"></i>
+                    <h3>Vaginoplasty</h3>
+                    <p>Dr. Figler developed an innovative “graft only” approach that is less invasive and reduces complications in the vaginal canal.</p>
+                </div>
+                <div class="spec-card">
+                    <i class="fas fa-mars"></i>
+                    <h3>Metoidioplasty</h3>
+                    <p>Dr. Figler utilizes the “ring flap” approach to achieve excellent functional and aesthetic results.</p>
+                </div>
+                <div class="spec-card">
+                    <i class="fas fa-hand-holding-medical"></i>
+                    <h3>Phalloplasty</h3>
+                    <p>Dr. Figler and Dr. Yemi Ogunleye (plastic surgery) perform radial forearm free flap and anterolateral thigh (ALT) phalloplasty.</p>
+                </div>
+                <div class="spec-card">
+                    <i class="fas fa-band-aid"></i>
+                    <h3>Hidradenitis</h3>
+                    <p>As part of a comprehensive team, including Dr. Chris Sayed in dermatology, Dr. Figler offers comprehensive genital reconstructive surgery to reduce disease burden and improve quality of life.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Background Section -->
+    <section id="background" class="background-section">
+        <div class="container">
+            <div class="section-title">
+                <h2>Background</h2>
+                <p>A foundation of rigorous academic medicine, dedicated fellowship training, and ongoing clinical research.</p>
+            </div>
+
+            <div class="bg-content-box">
+                <p>Dr. Figler received his medical degree from Case Western Reserve University School of Medicine and completed his residency training in Urology at Emory University Hospital in Atlanta, GA. Following residency, Dr. Figler completed a two-year fellowship in Genitourinary Trauma and Male Reconstruction at the University of Washington and Harborview Medical Center with Dr. Hunter Wessells, a pioneer in Genitourinary Trauma and Male Reconstruction. During this time, Dr. Figler also worked at the Harborview Injury Prevention and Research Center, where he pursued an interest in health services research. After his fellowship training, Dr. Figler worked at Thomas Jefferson University in Philadelphia, where he founded and directed the Division of Reconstructive Urology. In 2016, Dr. Figler joined UNC, where he serves as Professor of Urology and Plastic Surgery.</p>
+                <p>In July 2022, Dr. Figler started the fellowship in Genitourinary Reconstructive Surgery, and currently serves as the Fellowship Director.</p>
+                <p>Dr. Figler’s research interests include clinical outcomes and innovative techniques in genitourinary reconstruction, access to urologic surgery and strategies to address barriers.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Videos Section (Educational Library) -->
+    <section id="videos" class="videos-section">
+        <div class="container">
+            <div class="section-title">
+                <h2>Educational Video Library</h2>
+                <p>Surgical technique demonstrations, patient education modules, and academic presentations.</p>
+            </div>
+
+            <div class="channel-cta-banner">
+                <p>Explore our complete library of surgical videos and clinical presentations on our official YouTube channel.</p>
+                <a href="https://www.youtube.com/@uncurologicreconstruction8891" target="_blank" rel="noopener" class="btn-primary">
+                    <i class="fab fa-youtube"></i> Visit UNC Urologic Reconstruction YouTube Channel
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Research & Publications Section -->
+    <section id="research" class="research-section">
+        <div class="container">
+            <div class="section-title">
+                <h2>Research & Publications</h2>
+                <p>Advancing the science and safety of reconstructive urology through evidence-based discovery.</p>
+            </div>
+
+            <div class="research-card">
+                <div class="research-details">
+                    <h3>Active Clinical Research & Innovations</h3>
+                    <p>Dr. Figler’s ongoing academic work focuses heavily on evaluating clinical outcomes in genitourinary reconstruction, assessing healthcare access barriers, and optimizing surgical innovations. Review his extensive portfolio of peer-reviewed journal articles and scientific contributions on PubMed.</p>
+                </div>
+                <div class="research-action">
+                    <a href="https://www.ncbi.nlm.nih.gov/pubmed/?term=Figler+BD%5BAuthor%5D" target="_blank" rel="noopener" class="btn-pubmed">
+                        <i class="fas fa-external-link-alt"></i> View PubMed Publications
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Professional Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <h4>Brad Figler MD FACS</h4>
+                    <p>Genitourinary Reconstructive Surgery</p>
+                    <div class="footer-badge-container">
+                        <a href="https://www.castleconnolly.com/top-doctors/bradley-d-figler-urology-128cc226020" target="_blank" rel="noopener">
+                            <img src="https://www.med.unc.edu/urology/wp-content/uploads/sites/637/2020/11/Castle_Connolly_Top_Doctors-560x101.png" alt="Castle Connolly Top Doctors">
+                        </a>
+                    </div>
+                </div>
+                <div class="footer-col">
+                    <h4>Quick Links</h4>
+                    <ul class="footer-links">
+                        <li><a href="index.html#home">Home</a></li>
+                        <li><a href="index.html#expertise">Expertise</a></li>
+                        <li><a href="index.html#background">Background</a></li>
+                        <li><a href="index.html#videos">Videos</a></li>
+                        <li><a href="index.html#research">Publications</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Resources</h4>
+                    <ul class="footer-links">
+                        <li><a href="resources1.html">Patient Resources</a></li>
+                        <li><a href="https://www.med.unc.edu/urology/contact-us/" target="_blank" rel="noopener">Patient Referrals</a></li>
+                        <li><a href="https://www.youtube.com/@uncurologicreconstruction8891" target="_blank" rel="noopener">YouTube Video Channel</a></li>
+                        <li><a href="https://www.ncbi.nlm.nih.gov/pubmed/?term=Figler+BD%5BAuthor%5D" target="_blank" rel="noopener">PubMed Bibliography</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Brad Figler MD FACS. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Minimal Utility JavaScript for Mobile Navigation Toggle -->
+    <script>
+        const mobileToggle = document.getElementById('mobileToggle');
+        const navLinks = document.getElementById('navLinks');
+
+        mobileToggle.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+            const icon = mobileToggle.querySelector('i');
+            if (navLinks.classList.contains('active')) {
+                icon.classList.remove('fa-bars');
+                icon.classList.add('fa-times');
+            } else {
+                icon.classList.remove('fa-times');
+                icon.classList.add('fa-bars');
+            }
+        });
+
+        // Close mobile menu on link click
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                navLinks.classList.remove('active');
+                const icon = mobileToggle.querySelector('i');
+                icon.classList.remove('fa-times');
+                icon.classList.add('fa-bars');
+            });
+        });
+    </script>
+</body>
+</html>
