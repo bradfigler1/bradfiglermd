@@ -200,45 +200,61 @@
             display: inline-block;
         }
 
-        /* Sub-category Box Styling */
+        /* Collapsible Sub-category Box Styling */
         .surgery-subcard {
             background: var(--bg-light);
             border: 1px solid var(--border-color);
             border-radius: 8px;
-            padding: 24px;
-            margin-bottom: 24px;
-        }
-
-        .surgery-subcard:last-child {
-            margin-bottom: 0;
-        }
-
-        .surgery-subcard h3 {
-            font-size: 1.2rem;
-            color: var(--primary-navy);
             margin-bottom: 16px;
+            transition: var(--transition);
+            overflow: hidden;
+        }
+
+        .surgery-subcard:hover {
+            border-color: var(--carolina-blue);
+        }
+
+        .surgery-subcard summary {
+            font-size: 1.15rem;
+            color: var(--primary-navy);
+            padding: 18px 24px;
             font-family: 'Inter', sans-serif;
             font-weight: 600;
+            cursor: pointer;
             display: flex;
             align-items: center;
-            gap: 8px;
-            border-bottom: 1px dashed var(--border-color);
-            padding-bottom: 8px;
+            justify-content: space-between;
+            user-select: none;
+            background-color: var(--bg-light);
         }
 
-        .surgery-subcard h3 i {
+        .surgery-subcard summary::-webkit-details-marker {
+            display: none;
+        }
+
+        .surgery-subcard summary::after {
+            content: '\f078';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            font-size: 0.9rem;
             color: var(--carolina-blue);
-            font-size: 1rem;
+            transition: transform 0.3s ease;
+        }
+
+        .surgery-subcard[open] summary::after {
+            transform: rotate(180deg);
+        }
+
+        .subcard-content {
+            padding: 0 24px 24px 24px;
+            background-color: var(--white);
+            border-top: 1px solid var(--border-color);
         }
 
         .faq-item {
-            margin-bottom: 16px;
+            margin-top: 20px;
             padding-left: 15px;
             border-left: 2px solid var(--carolina-blue);
-        }
-
-        .faq-item:last-child {
-            margin-bottom: 0;
         }
 
         .faq-item h4 {
@@ -361,121 +377,139 @@
                 <h2>Before your consult</h2>
                 
                 <!-- Urethroplasty -->
-                <div class="surgery-subcard">
-                    <h3><i class="fas fa-chevron-right"></i> Urethroplasty</h3>
-                    <div class="faq-item">
-                        <h4>Question 1: What records should I bring?</h4>
-                        <p>Answer 1: Please bring prior imaging reports, operative notes, and past cystoscopy summaries.</p>
+                <details class="surgery-subcard">
+                    <summary>Urethroplasty</summary>
+                    <div class="subcard-content">
+                        <div class="faq-item">
+                            <h4>Question 1: What records should I bring?</h4>
+                            <p>Answer 1: Please bring prior imaging reports, operative notes, and past cystoscopy summaries.</p>
+                        </div>
+                        <div class="faq-item">
+                            <h4>Question 2: Do I need a referral?</h4>
+                            <p>Answer 2: Check with your insurance carrier or primary provider regarding formal referral requirements.</p>
+                        </div>
                     </div>
-                    <div class="faq-item">
-                        <h4>Question 2: Do I need a referral?</h4>
-                        <p>Answer 2: Check with your insurance carrier or primary provider regarding formal referral requirements.</p>
-                    </div>
-                </div>
+                </details>
 
                 <!-- Rectourethral fistula repair -->
-                <div class="surgery-subcard">
-                    <h3><i class="fas fa-chevron-right"></i> Rectourethral fistula repair</h3>
-                    <div class="faq-item">
-                        <h4>Question 1: What diagnostic history is reviewed?</h4>
-                        <p>Answer 1: Prior radiation records, lower endoscopy results, and imaging scans are evaluated.</p>
+                <details class="surgery-subcard">
+                    <summary>Rectourethral fistula repair</summary>
+                    <div class="subcard-content">
+                        <div class="faq-item">
+                            <h4>Question 1: What diagnostic history is reviewed?</h4>
+                            <p>Answer 1: Prior radiation records, lower endoscopy results, and imaging scans are evaluated.</p>
+                        </div>
+                        <div class="faq-item">
+                            <h4>Question 2: How long is the initial consultation?</h4>
+                            <p>Answer 2: Consultations typically take 45 to 60 minutes to thoroughly assess complex tissue history.</p>
+                        </div>
                     </div>
-                    <div class="faq-item">
-                        <h4>Question 2: How long is the initial consultation?</h4>
-                        <p>Answer 2: Consultations typically take 45 to 60 minutes to thoroughly assess complex tissue history.</p>
-                    </div>
-                </div>
+                </details>
 
                 <!-- Buried penis repair -->
-                <div class="surgery-subcard">
-                    <h3><i class="fas fa-chevron-right"></i> Buried penis repair</h3>
-                    <div class="faq-item">
-                        <h4>Question 1: What symptoms are assessed during evaluation?</h4>
-                        <p>Answer 1: Functional limitations with urination, skin hygiene issues, and anatomical support.</p>
+                <details class="surgery-subcard">
+                    <summary>Buried penis repair</summary>
+                    <div class="subcard-content">
+                        <div class="faq-item">
+                            <h4>Question 1: What symptoms are assessed during evaluation?</h4>
+                            <p>Answer 1: Functional limitations with urination, skin hygiene issues, and anatomical support.</p>
+                        </div>
+                        <div class="faq-item">
+                            <h4>Question 2: Are photos or physical exams required?</h4>
+                            <p>Answer 2: A physical examination is typically conducted during your initial visit to map out the surgical approach.</p>
+                        </div>
                     </div>
-                    <div class="faq-item">
-                        <h4>Question 2: Are photos or physical exams required?</h4>
-                        <p>Answer 2: A physical examination is typically conducted during your initial visit to map out the surgical approach.</p>
-                    </div>
-                </div>
+                </details>
 
                 <!-- Mohs Reconstruction -->
-                <div class="surgery-subcard">
-                    <h3><i class="fas fa-chevron-right"></i> Mohs Reconstruction</h3>
-                    <div class="faq-item">
-                        <h4>Question 1: What pathology reports are needed?</h4>
-                        <p>Answer 1: Bring your dermatology or Mohs surgery pathology reports detailing the margins and defect size.</p>
+                <details class="surgery-subcard">
+                    <summary>Mohs Reconstruction</summary>
+                    <div class="subcard-content">
+                        <div class="faq-item">
+                            <h4>Question 1: What pathology reports are needed?</h4>
+                            <p>Answer 1: Bring your dermatology or Mohs surgery pathology reports detailing the margins and defect size.</p>
+                        </div>
+                        <div class="faq-item">
+                            <h4>Question 2: When can reconstruction happen after Mohs?</h4>
+                            <p>Answer 2: Timing depends on final margin clearance and tissue health following skin cancer removal.</p>
+                        </div>
                     </div>
-                    <div class="faq-item">
-                        <h4>Question 2: When can reconstruction happen after Mohs?</h4>
-                        <p>Answer 2: Timing depends on final margin clearance and tissue health following skin cancer removal.</p>
-                    </div>
-                </div>
+                </details>
 
                 <!-- Hidradenitis surgery -->
-                <div class="surgery-subcard">
-                    <h3><i class="fas fa-chevron-right"></i> Hidradenitis surgery</h3>
-                    <div class="faq-item">
-                        <h4>Question 1: Do I need a dermatology evaluation first?</h4>
-                        <p>Answer 1: Collaborating closely with your dermatologist helps optimize medical management prior to surgical consultation.</p>
+                <details class="surgery-subcard">
+                    <summary>Hidradenitis surgery</summary>
+                    <div class="subcard-content">
+                        <div class="faq-item">
+                            <h4>Question 1: Do I need a dermatology evaluation first?</h4>
+                            <p>Answer 1: Collaborating closely with your dermatologist helps optimize medical management prior to surgical consultation.</p>
+                        </div>
+                        <div class="faq-item">
+                            <h4>Question 2: What areas are typically evaluated?</h4>
+                            <p>Answer 2: Active inflammatory lesions and scarring patterns across the genital and perineal regions.</p>
+                        </div>
                     </div>
-                    <div class="faq-item">
-                        <h4>Question 2: What areas are typically evaluated?</h4>
-                        <p>Answer 2: Active inflammatory lesions and scarring patterns across the genital and perineal regions.</p>
-                    </div>
-                </div>
+                </details>
 
                 <!-- Urethral dilation/Optilume -->
-                <div class="surgery-subcard">
-                    <h3><i class="fas fa-chevron-right"></i> Urethral dilation/Optilume</h3>
-                    <div class="faq-item">
-                        <h4>Question 1: What is the goal of an initial stricture review?</h4>
-                        <p>Answer 1: Determining whether minimally invasive options like dilation or Optilume are appropriate versus open surgery.</p>
+                <details class="surgery-subcard">
+                    <summary>Urethral dilation/Optilume</summary>
+                    <div class="subcard-content">
+                        <div class="faq-item">
+                            <h4>Question 1: What is the goal of an initial stricture review?</h4>
+                            <p>Answer 1: Determining whether minimally invasive options like dilation or Optilume are appropriate versus open surgery.</p>
+                        </div>
+                        <div class="faq-item">
+                            <h4>Question 2: What prior procedural history is helpful?</h4>
+                            <p>Answer 2: Dates and outcomes of any previous dilations, direct visual internal urethrotomies (DVIU), or past catheterizations.</p>
+                        </div>
                     </div>
-                    <div class="faq-item">
-                        <h4>Question 2: What prior procedural history is helpful?</h4>
-                        <p>Answer 2: Dates and outcomes of any previous dilations, direct visual internal urethrotomies (DVIU), or past catheterizations.</p>
-                    </div>
-                </div>
+                </details>
 
                 <!-- Vaginoplasty -->
-                <div class="surgery-subcard">
-                    <h3><i class="fas fa-chevron-right"></i> Vaginoplasty</h3>
-                    <div class="faq-item">
-                        <h4>Question 1: What mental health documentation is required?</h4>
-                        <p>Answer 1: WPATH-aligned letters of support from qualified mental health professionals are typically requested.</p>
+                <details class="surgery-subcard">
+                    <summary>Vaginoplasty</summary>
+                    <div class="subcard-content">
+                        <div class="faq-item">
+                            <h4>Question 1: What mental health documentation is required?</h4>
+                            <p>Answer 1: WPATH-aligned letters of support from qualified mental health professionals are typically requested.</p>
+                        </div>
+                        <div class="faq-item">
+                            <h4>Question 2: What surgical techniques are discussed?</h4>
+                            <p>Answer 2: We review graft options, anatomical goals, and expected recovery milestones during your consultation.</p>
+                        </div>
                     </div>
-                    <div class="faq-item">
-                        <h4>Question 2: What surgical techniques are discussed?</h4>
-                        <p>Answer 2: We review graft options, anatomical goals, and expected recovery milestones during your consultation.</p>
-                    </div>
-                </div>
+                </details>
 
                 <!-- Metoidioplasty -->
-                <div class="surgery-subcard">
-                    <h3><i class="fas fa-chevron-right"></i> Metoidioplasty</h3>
-                    <div class="faq-item">
-                        <h4>Question 1: What topics are covered in a planning visit?</h4>
-                        <p>Answer 1: Urethral lengthening considerations, scrotoplasty choices, and general functional objectives.</p>
+                <details class="surgery-subcard">
+                    <summary>Metoidioplasty</summary>
+                    <div class="subcard-content">
+                        <div class="faq-item">
+                            <h4>Question 1: What topics are covered in a planning visit?</h4>
+                            <p>Answer 1: Urethral lengthening considerations, scrotoplasty choices, and general functional objectives.</p>
+                        </div>
+                        <div class="faq-item">
+                            <h4>Question 2: Do I need hormone therapy adjustments prior to consult?</h4>
+                            <p>Answer 2: Hormone management is reviewed in coordination with your primary provider or endocrinologist.</p>
+                        </div>
                     </div>
-                    <div class="faq-item">
-                        <h4>Question 2: Do I need hormone therapy adjustments prior to consult?</h4>
-                        <p>Answer 2: Hormone management is reviewed in coordination with your primary provider or endocrinologist.</p>
-                    </div>
-                </div>
+                </details>
 
                 <!-- Phalloplasty (stage 2) -->
-                <div class="surgery-subcard">
-                    <h3><i class="fas fa-chevron-right"></i> Phalloplasty (stage 2)</h3>
-                    <div class="faq-item">
-                        <h4>Question 1: What records are required for stage 2 evaluations?</h4>
-                        <p>Answer 1: Complete operative notes and timelines from your stage 1 phalloplasty procedure.</p>
+                <details class="surgery-subcard">
+                    <summary>Phalloplasty (stage 2)</summary>
+                    <div class="subcard-content">
+                        <div class="faq-item">
+                            <h4>Question 1: What records are required for stage 2 evaluations?</h4>
+                            <p>Answer 1: Complete operative notes and timelines from your stage 1 phalloplasty procedure.</p>
+                        </div>
+                        <div class="faq-item">
+                            <h4>Question 2: What goals are addressed in stage 2?</h4>
+                            <p>Answer 2: Subsequent reconstructive phases, urinary integration, and secondary aesthetic refinements.</p>
+                        </div>
                     </div>
-                    <div class="faq-item">
-                        <h4>Question 2: What goals are addressed in stage 2?</h4>
-                        <p>Answer 2: Subsequent reconstructive phases, urinary integration, and secondary aesthetic refinements.</p>
-                    </div>
-                </div>
+                </details>
             </div>
 
             <!-- CATEGORY 2: BEFORE SURGERY -->
@@ -483,121 +517,139 @@
                 <h2>Before surgery</h2>
                 
                 <!-- Urethroplasty -->
-                <div class="surgery-subcard">
-                    <h3><i class="fas fa-chevron-right"></i> Urethroplasty</h3>
-                    <div class="faq-item">
-                        <h4>Question 1: When should I stop blood thinners?</h4>
-                        <p>Answer 1: Discontinue blood thinners and specific supplements 7 days prior to your operation.</p>
+                <details class="surgery-subcard">
+                    <summary>Urethroplasty</summary>
+                    <div class="subcard-content">
+                        <div class="faq-item">
+                            <h4>Question 1: When should I stop blood thinners?</h4>
+                            <p>Answer 1: Discontinue blood thinners and specific supplements 7 days prior to your operation.</p>
+                        </div>
+                        <div class="faq-item">
+                            <h4>Question 2: What if I develop a UTI pre-op?</h4>
+                            <p>Answer 2: Notify our office immediately so we can provide targeted antibiotic treatment.</p>
+                        </div>
                     </div>
-                    <div class="faq-item">
-                        <h4>Question 2: What if I develop a UTI pre-op?</h4>
-                        <p>Answer 2: Notify our office immediately so we can provide targeted antibiotic treatment.</p>
-                    </div>
-                </div>
+                </details>
 
                 <!-- Rectourethral fistula repair -->
-                <div class="surgery-subcard">
-                    <h3><i class="fas fa-chevron-right"></i> Rectourethral fistula repair</h3>
-                    <div class="faq-item">
-                        <h4>Question 1: Is a bowel preparation required?</h4>
-                        <p>Answer 1: Yes, specific mechanical or dietary bowel preps are provided to protect the repair site.</p>
+                <details class="surgery-subcard">
+                    <summary>Rectourethral fistula repair</summary>
+                    <div class="subcard-content">
+                        <div class="faq-item">
+                            <h4>Question 1: Is a bowel preparation required?</h4>
+                            <p>Answer 1: Yes, specific mechanical or dietary bowel preps are provided to protect the repair site.</p>
+                        </div>
+                        <div class="faq-item">
+                            <h4>Question 2: When do I start fasting?</h4>
+                            <p>Answer 2: No food or drink after midnight on the night prior to surgery.</p>
+                        </div>
                     </div>
-                    <div class="faq-item">
-                        <h4>Question 2: When do I start fasting?</h4>
-                        <p>Answer 2: No food or drink after midnight on the night prior to surgery.</p>
-                    </div>
-                </div>
+                </details>
 
                 <!-- Buried penis repair -->
-                <div class="surgery-subcard">
-                    <h3><i class="fas fa-chevron-right"></i> Buried penis repair</h3>
-                    <div class="faq-item">
-                        <h4>Question 1: Are there special pre-op skin protocols?</h4>
-                        <p>Answer 1: Follow any localized antiseptic washing guidelines provided in your pre-op packet.</p>
+                <details class="surgery-subcard">
+                    <summary>Buried penis repair</summary>
+                    <div class="subcard-content">
+                        <div class="faq-item">
+                            <h4>Question 1: Are there special pre-op skin protocols?</h4>
+                            <p>Answer 1: Follow any localized antiseptic washing guidelines provided in your pre-op packet.</p>
+                        </div>
+                        <div class="faq-item">
+                            <h4>Question 2: What medications must be paused?</h4>
+                            <p>Answer 2: Standard medication pauses apply for anti-platelet agents and herbal supplements.</p>
+                        </div>
                     </div>
-                    <div class="faq-item">
-                        <h4>Question 2: What medications must be paused?</h4>
-                        <p>Answer 2: Standard medication pauses apply for anti-platelet agents and herbal supplements.</p>
-                    </div>
-                </div>
+                </details>
 
                 <!-- Mohs Reconstruction -->
-                <div class="surgery-subcard">
-                    <h3><i class="fas fa-chevron-right"></i> Mohs Reconstruction</h3>
-                    <div class="faq-item">
-                        <h4>Question 1: How should I care for the Mohs defect pre-op?</h4>
-                        <p>Answer 1: Keep temporary dressings clean and dry as instructed by your Mohs surgeon.</p>
+                <details class="surgery-subcard">
+                    <summary>Mohs Reconstruction</summary>
+                    <div class="subcard-content">
+                        <div class="faq-item">
+                            <h4>Question 1: How should I care for the Mohs defect pre-op?</h4>
+                            <p>Answer 1: Keep temporary dressings clean and dry as instructed by your Mohs surgeon.</p>
+                        </div>
+                        <div class="faq-item">
+                            <h4>Question 2: Can I eat the morning of surgery?</h4>
+                            <p>Answer 2: Follow facility fasting guidelines depending on whether local or general anesthesia is used.</p>
+                        </div>
                     </div>
-                    <div class="faq-item">
-                        <h4>Question 2: Can I eat the morning of surgery?</h4>
-                        <p>Answer 2: Follow facility fasting guidelines depending on whether local or general anesthesia is used.</p>
-                    </div>
-                </div>
+                </details>
 
                 <!-- Hidradenitis surgery -->
-                <div class="surgery-subcard">
-                    <h3><i class="fas fa-chevron-right"></i> Hidradenitis surgery</h3>
-                    <div class="faq-item">
-                        <h4>Question 1: What if I have an active flare before surgery?</h4>
-                        <p>Answer 1: Call our clinic right away if you experience sudden acute inflammation or abscess formation.</p>
+                <details class="surgery-subcard">
+                    <summary>Hidradenitis surgery</summary>
+                    <div class="subcard-content">
+                        <div class="faq-item">
+                            <h4>Question 1: What if I have an active flare before surgery?</h4>
+                            <p>Answer 1: Call our clinic right away if you experience sudden acute inflammation or abscess formation.</p>
+                        </div>
+                        <div class="faq-item">
+                            <h4>Question 2: Are there pre-op hygiene regimens?</h4>
+                            <p>Answer 2: Specific antibacterial washes are often recommended for the surgical field days prior.</p>
+                        </div>
                     </div>
-                    <div class="faq-item">
-                        <h4>Question 2: Are there pre-op hygiene regimens?</h4>
-                        <p>Answer 2: Specific antibacterial washes are often recommended for the surgical field days prior.</p>
-                    </div>
-                </div>
+                </details>
 
                 <!-- Urethral dilation/Optilume -->
-                <div class="surgery-subcard">
-                    <h3><i class="fas fa-chevron-right"></i> Urethral dilation/Optilume</h3>
-                    <div class="faq-item">
-                        <h4>Question 1: Do I need pre-op antibiotic coverage?</h4>
-                        <p>Answer 1: Antibiotics are typically given around the time of the procedure to prevent urinary tract infection.</p>
+                <details class="surgery-subcard">
+                    <summary>Urethral dilation/Optilume</summary>
+                    <div class="subcard-content">
+                        <div class="faq-item">
+                            <h4>Question 1: Do I need pre-op antibiotic coverage?</h4>
+                            <p>Answer 1: Antibiotics are typically given around the time of the procedure to prevent urinary tract infection.</p>
+                        </div>
+                        <div class="faq-item">
+                            <h4>Question 2: Can I take my regular morning medications?</h4>
+                            <p>Answer 2: Blood pressure medications can usually be taken with a small sip of water.</p>
+                        </div>
                     </div>
-                    <div class="faq-item">
-                        <h4>Question 2: Can I take my regular morning medications?</h4>
-                        <p>Answer 2: Blood pressure medications can usually be taken with a small sip of water.</p>
-                    </div>
-                </div>
+                </details>
 
                 <!-- Vaginoplasty -->
-                <div class="surgery-subcard">
-                    <h3><i class="fas fa-chevron-right"></i> Vaginoplasty</h3>
-                    <div class="faq-item">
-                        <h4>Question 1: What are the hair removal requirements?</h4>
-                        <p>Answer 1: Complete all required permanent hair removal protocols well in advance of your surgery date.</p>
+                <details class="surgery-subcard">
+                    <summary>Vaginoplasty</summary>
+                    <div class="subcard-content">
+                        <div class="faq-item">
+                            <h4>Question 1: What are the hair removal requirements?</h4>
+                            <p>Answer 1: Complete all required permanent hair removal protocols well in advance of your surgery date.</p>
+                        </div>
+                        <div class="faq-item">
+                            <h4>Question 2: What bowel prep instructions apply?</h4>
+                            <p>Answer 2: Follow your tailored gastrointestinal cleansing regimen the day before surgery.</p>
+                        </div>
                     </div>
-                    <div class="faq-item">
-                        <h4>Question 2: What bowel prep instructions apply?</h4>
-                        <p>Answer 2: Follow your tailored gastrointestinal cleansing regimen the day before surgery.</p>
-                    </div>
-                </div>
+                </details>
 
                 <!-- Metoidioplasty -->
-                <div class="surgery-subcard">
-                    <h3><i class="fas fa-chevron-right"></i> Metoidioplasty</h3>
-                    <div class="faq-item">
-                        <h4>Question 1: Are hormone adjustments needed?</h4>
-                        <p>Answer 1: Review any necessary testosterone timing changes with your surgical care team.</p>
+                <details class="surgery-subcard">
+                    <summary>Metoidioplasty</summary>
+                    <div class="subcard-content">
+                        <div class="faq-item">
+                            <h4>Question 1: Are hormone adjustments needed?</h4>
+                            <p>Answer 1: Review any necessary testosterone timing changes with your surgical care team.</p>
+                        </div>
+                        <div class="faq-item">
+                            <h4>Question 2: When do I stop eating and drinking?</h4>
+                            <p>Answer 2: Fasting begins strictly after midnight the night before your procedure.</p>
+                        </div>
                     </div>
-                    <div class="faq-item">
-                        <h4>Question 2: When do I stop eating and drinking?</h4>
-                        <p>Answer 2: Fasting begins strictly after midnight the night before your procedure.</p>
-                    </div>
-                </div>
+                </details>
 
                 <!-- Phalloplasty (stage 2) -->
-                <div class="surgery-subcard">
-                    <h3><i class="fas fa-chevron-right"></i> Phalloplasty (stage 2)</h3>
-                    <div class="faq-item">
-                        <h4>Question 1: What preparation instructions are unique to stage 2?</h4>
-                        <p>Answer 1: Specific dressing and hygiene protocols will be outlined during your pre-op visit.</p>
+                <details class="surgery-subcard">
+                    <summary>Phalloplasty (stage 2)</summary>
+                    <div class="subcard-content">
+                        <div class="faq-item">
+                            <h4>Question 1: What preparation instructions are unique to stage 2?</h4>
+                            <p>Answer 1: Specific dressing and hygiene protocols will be outlined during your pre-op visit.</p>
+                        </div>
+                        <div class="faq-item">
+                            <h4>Question 2: What checks are completed before admission?</h4>
+                            <p>Answer 2: Final medical clearance and blood work verification must be completed within 30 days.</p>
+                        </div>
                     </div>
-                    <div class="faq-item">
-                        <h4>Question 2: What checks are completed before admission?</h4>
-                        <p>Answer 2: Final medical clearance and blood work verification must be completed within 30 days.</p>
-                    </div>
-                </div>
+                </details>
             </div>
 
             <!-- CATEGORY 3: DAY OF SURGERY -->
@@ -605,121 +657,139 @@
                 <h2>Day of surgery</h2>
                 
                 <!-- Urethroplasty -->
-                <div class="surgery-subcard">
-                    <h3><i class="fas fa-chevron-right"></i> Urethroplasty</h3>
-                    <div class="faq-item">
-                        <h4>Question 1: What clothing should I wear?</h4>
-                        <p>Answer 1: Wear loose sweatpants or comfortable trousers to accommodate post-op dressings and catheters.</p>
+                <details class="surgery-subcard">
+                    <summary>Urethroplasty</summary>
+                    <div class="subcard-content">
+                        <div class="faq-item">
+                            <h4>Question 1: What clothing should I wear?</h4>
+                            <p>Answer 1: Wear loose sweatpants or comfortable trousers to accommodate post-op dressings and catheters.</p>
+                        </div>
+                        <div class="faq-item">
+                            <h4>Question 2: Will I wake up with a catheter?</h4>
+                            <p>Answer 2: Yes, a urinary catheter is placed while you are asleep to protect the reconstruction.</p>
+                        </div>
                     </div>
-                    <div class="faq-item">
-                        <h4>Question 2: Will I wake up with a catheter?</h4>
-                        <p>Answer 2: Yes, a urinary catheter is placed while you are asleep to protect the reconstruction.</p>
-                    </div>
-                </div>
+                </details>
 
                 <!-- Rectourethral fistula repair -->
-                <div class="surgery-subcard">
-                    <h3><i class="fas fa-chevron-right"></i> Rectourethral fistula repair</h3>
-                    <div class="faq-item">
-                        <h4>Question 1: What arrival time is expected?</h4>
-                        <p>Answer 1: Typically arrive 2 hours prior to your scheduled operating room time.</p>
+                <details class="surgery-subcard">
+                    <summary>Rectourethral fistula repair</summary>
+                    <div class="subcard-content">
+                        <div class="faq-item">
+                            <h4>Question 1: What arrival time is expected?</h4>
+                            <p>Answer 1: Typically arrive 2 hours prior to your scheduled operating room time.</p>
+                        </div>
+                        <div class="faq-item">
+                            <h4>Question 2: Do I need a driver?</h4>
+                            <p>Answer 2: Yes, discharge requires a responsible adult to accompany you home or to a local recovery hotel.</p>
+                        </div>
                     </div>
-                    <div class="faq-item">
-                        <h4>Question 2: Do I need a driver?</h4>
-                        <p>Answer 2: Yes, discharge requires a responsible adult to accompany you home or to a local recovery hotel.</p>
-                    </div>
-                </div>
+                </details>
 
                 <!-- Buried penis repair -->
-                <div class="surgery-subcard">
-                    <h3><i class="fas fa-chevron-right"></i> Buried penis repair</h3>
-                    <div class="faq-item">
-                        <h4>Question 1: Will there be surgical drains?</h4>
-                        <p>Answer 1: Temporary drains may be placed to control fluid buildup and are managed during early recovery.</p>
+                <details class="surgery-subcard">
+                    <summary>Buried penis repair</summary>
+                    <div class="subcard-content">
+                        <div class="faq-item">
+                            <h4>Question 1: Will there be surgical drains?</h4>
+                            <p>Answer 1: Temporary drains may be placed to control fluid buildup and are managed during early recovery.</p>
+                        </div>
+                        <div class="faq-item">
+                            <h4>Question 2: Can I bring electronics or personal items?</h4>
+                            <p>Answer 2: Bring photo ID and insurance cards; leave valuables and jewelry at home.</p>
+                        </div>
                     </div>
-                    <div class="faq-item">
-                        <h4>Question 2: Can I bring electronics or personal items?</h4>
-                        <p>Answer 2: Bring photo ID and insurance cards; leave valuables and jewelry at home.</p>
-                    </div>
-                </div>
+                </details>
 
                 <!-- Mohs Reconstruction -->
-                <div class="surgery-subcard">
-                    <h3><i class="fas fa-chevron-right"></i> Mohs Reconstruction</h3>
-                    <div class="faq-item">
-                        <h4>Question 1: How long does the procedure take?</h4>
-                        <p>Answer 1: Duration varies based on the size and complexity of the reconstructive repair.</p>
+                <details class="surgery-subcard">
+                    <summary>Mohs Reconstruction</summary>
+                    <div class="subcard-content">
+                        <div class="faq-item">
+                            <h4>Question 1: How long does the procedure take?</h4>
+                            <p>Answer 1: Duration varies based on the size and complexity of the reconstructive repair.</p>
+                        </div>
+                        <div class="faq-item">
+                            <h4>Question 2: What type of anesthesia is used?</h4>
+                            <p>Answer 2: Depending on the site, local anesthesia or sedation is coordinated with your care team.</p>
+                        </div>
                     </div>
-                    <div class="faq-item">
-                        <h4>Question 2: What type of anesthesia is used?</h4>
-                        <p>Answer 2: Depending on the site, local anesthesia or sedation is coordinated with your care team.</p>
-                    </div>
-                </div>
+                </details>
 
                 <!-- Hidradenitis surgery -->
-                <div class="surgery-subcard">
-                    <h3><i class="fas fa-chevron-right"></i> Hidradenitis surgery</h3>
-                    <div class="faq-item">
-                        <h4>Question 1: What apparel is recommended?</h4>
-                        <p>Answer 1: Loose cotton underwear and very baggy pants minimize friction on sensitive regions.</p>
+                <details class="surgery-subcard">
+                    <summary>Hidradenitis surgery</summary>
+                    <div class="subcard-content">
+                        <div class="faq-item">
+                            <h4>Question 1: What apparel is recommended?</h4>
+                            <p>Answer 1: Loose cotton underwear and very baggy pants minimize friction on sensitive regions.</p>
+                        </div>
+                        <div class="faq-item">
+                            <h4>Question 2: What happens during pre-op check-in?</h4>
+                            <p>Answer 2: Nurses will start your IV, review your medications, and complete safety verifications.</p>
+                        </div>
                     </div>
-                    <div class="faq-item">
-                        <h4>Question 2: What happens during pre-op check-in?</h4>
-                        <p>Answer 2: Nurses will start your IV, review your medications, and complete safety verifications.</p>
-                    </div>
-                </div>
+                </details>
 
                 <!-- Urethral dilation/Optilume -->
-                <div class="surgery-subcard">
-                    <h3><i class="fas fa-chevron-right"></i> Urethral dilation/Optilume</h3>
-                    <div class="faq-item">
-                        <h4>Question 1: Is outpatient discharge same-day?</h4>
-                        <p>Answer 1: Yes, most dilation or Optilume procedures are performed on a same-day outpatient basis.</p>
+                <details class="surgery-subcard">
+                    <summary>Urethral dilation/Optilume</summary>
+                    <div class="subcard-content">
+                        <div class="faq-item">
+                            <h4>Question 1: Is outpatient discharge same-day?</h4>
+                            <p>Answer 1: Yes, most dilation or Optilume procedures are performed on a same-day outpatient basis.</p>
+                        </div>
+                        <div class="faq-item">
+                            <h4>Question 2: Will I have a temporary catheter?</h4>
+                            <p>Answer 2: A short-term catheter may be placed temporarily depending on the exact procedural approach.</p>
+                        </div>
                     </div>
-                    <div class="faq-item">
-                        <h4>Question 2: Will I have a temporary catheter?</h4>
-                        <p>Answer 2: A short-term catheter may be placed temporarily depending on the exact procedural approach.</p>
-                    </div>
-                </div>
+                </details>
 
                 <!-- Vaginoplasty -->
-                <div class="surgery-subcard">
-                    <h3><i class="fas fa-chevron-right"></i> Vaginoplasty</h3>
-                    <div class="faq-item">
-                        <h4>Question 1: What packing or bolsters are placed?</h4>
-                        <p>Answer 1: Supportive vaginal packing is placed intraoperatively to maintain tissue pressure and hemostasis.</p>
+                <details class="surgery-subcard">
+                    <summary>Vaginoplasty</summary>
+                    <div class="subcard-content">
+                        <div class="faq-item">
+                            <h4>Question 1: What packing or bolsters are placed?</h4>
+                            <p>Answer 1: Supportive vaginal packing is placed intraoperatively to maintain tissue pressure and hemostasis.</p>
+                        </div>
+                        <div class="faq-item">
+                            <h4>Question 2: What should my support person know?</h4>
+                            <p>Answer 2: Your driver must stay at the facility during surgery and assist with post-discharge logistics.</p>
+                        </div>
                     </div>
-                    <div class="faq-item">
-                        <h4>Question 2: What should my support person know?</h4>
-                        <p>Answer 2: Your driver must stay at the facility during surgery and assist with post-discharge logistics.</p>
-                    </div>
-                </div>
+                </details>
 
                 <!-- Metoidioplasty -->
-                <div class="surgery-subcard">
-                    <h3><i class="fas fa-chevron-right"></i> Metoidioplasty</h3>
-                    <div class="faq-item">
-                        <h4>Question 1: What urinary diversion is utilized?</h4>
-                        <p>Answer 1: A suprapubic tube or urethral catheter is typically placed to divert urine safely during healing.</p>
+                <details class="surgery-subcard">
+                    <summary>Metoidioplasty</summary>
+                    <div class="subcard-content">
+                        <div class="faq-item">
+                            <h4>Question 1: What urinary diversion is utilized?</h4>
+                            <p>Answer 1: A suprapubic tube or urethral catheter is typically placed to divert urine safely during healing.</p>
+                        </div>
+                        <div class="faq-item">
+                            <h4>Question 2: What should I wear on arrival?</h4>
+                            <p>Answer 2: Soft, loose-fitting loungewear or sweatpants ensuring no pressure on the surgical field.</p>
+                        </div>
                     </div>
-                    <div class="faq-item">
-                        <h4>Question 2: What should I wear on arrival?</h4>
-                        <p>Answer 2: Soft, loose-fitting loungewear or sweatpants ensuring no pressure on the surgical field.</p>
-                    </div>
-                </div>
+                </details>
 
                 <!-- Phalloplasty (stage 2) -->
-                <div class="surgery-subcard">
-                    <h3><i class="fas fa-chevron-right"></i> Phalloplasty (stage 2)</h3>
-                    <div class="faq-item">
-                        <h4>Question 1: What checks occur in pre-op?</h4>
-                        <p>Answer 1: Anesthesia review, vital signs confirmation, and site verification with the surgical team.</p>
+                <details class="surgery-subcard">
+                    <summary>Phalloplasty (stage 2)</summary>
+                    <div class="subcard-content">
+                        <div class="faq-item">
+                            <h4>Question 1: What checks occur in pre-op?</h4>
+                            <p>Answer 1: Anesthesia review, vital signs confirmation, and site verification with the surgical team.</p>
+                        </div>
+                        <div class="faq-item">
+                            <h4>Question 2: How long is the operating time?</h4>
+                            <p>Answer 2: Timelines vary based on the specific secondary reconstructive steps planned.</p>
+                        </div>
                     </div>
-                    <div class="faq-item">
-                        <h4>Question 2: How long is the operating time?</h4>
-                        <p>Answer 2: Timelines vary based on the specific secondary reconstructive steps planned.</p>
-                    </div>
-                </div>
+                </details>
             </div>
 
             <!-- CATEGORY 4: AFTER SURGERY -->
@@ -727,121 +797,139 @@
                 <h2>After surgery</h2>
                 
                 <!-- Urethroplasty -->
-                <div class="surgery-subcard">
-                    <h3><i class="fas fa-chevron-right"></i> Urethroplasty</h3>
-                    <div class="faq-item">
-                        <h4>Question 1: When is the catheter removed?</h4>
-                        <p>Answer 1: Catheters typically remain in place for 14 to 21 days before an imaging check.</p>
+                <details class="surgery-subcard">
+                    <summary>Urethroplasty</summary>
+                    <div class="subcard-content">
+                        <div class="faq-item">
+                            <h4>Question 1: When is the catheter removed?</h4>
+                            <p>Answer 1: Catheters typically remain in place for 14 to 21 days before an imaging check.</p>
+                        </div>
+                        <div class="faq-item">
+                            <h4>Question 2: When can I resume heavy lifting?</h4>
+                            <p>Answer 2: Avoid heavy lifting (over 10 lbs) and strenuous exercise for 4 to 6 weeks.</p>
+                        </div>
                     </div>
-                    <div class="faq-item">
-                        <h4>Question 2: When can I resume heavy lifting?</h4>
-                        <p>Answer 2: Avoid heavy lifting (over 10 lbs) and strenuous exercise for 4 to 6 weeks.</p>
-                    </div>
-                </div>
+                </details>
 
                 <!-- Rectourethral fistula repair -->
-                <div class="surgery-subcard">
-                    <h3><i class="fas fa-chevron-right"></i> Rectourethral fistula repair</h3>
-                    <div class="faq-item">
-                        <h4>Question 1: How is stool consistency managed?</h4>
-                        <p>Answer 1: High-fiber intake and stool softeners prevent straining during bowel movements.</p>
+                <details class="surgery-subcard">
+                    <summary>Rectourethral fistula repair</summary>
+                    <div class="subcard-content">
+                        <div class="faq-item">
+                            <h4>Question 1: How is stool consistency managed?</h4>
+                            <p>Answer 1: High-fiber intake and stool softeners prevent straining during bowel movements.</p>
+                        </div>
+                        <div class="faq-item">
+                            <h4>Question 2: When are follow-up visits scheduled?</h4>
+                            <p>Answer 2: Initial post-op visits are scheduled at booking to monitor healing milestones.</p>
+                        </div>
                     </div>
-                    <div class="faq-item">
-                        <h4>Question 2: When are follow-up visits scheduled?</h4>
-                        <p>Answer 2: Initial post-op visits are scheduled at booking to monitor healing milestones.</p>
-                    </div>
-                </div>
+                </details>
 
                 <!-- Buried penis repair -->
-                <div class="surgery-subcard">
-                    <h3><i class="fas fa-chevron-right"></i> Buried penis repair</h3>
-                    <div class="faq-item">
-                        <h4>Question 1: How do I manage postoperative swelling?</h4>
-                        <p>Answer 1: Supportive underwear and intermittent ice packs help reduce early swelling.</p>
+                <details class="surgery-subcard">
+                    <summary>Buried penis repair</summary>
+                    <div class="subcard-content">
+                        <div class="faq-item">
+                            <h4>Question 1: How do I manage postoperative swelling?</h4>
+                            <p>Answer 1: Supportive underwear and intermittent ice packs help reduce early swelling.</p>
+                        </div>
+                        <div class="faq-item">
+                            <h4>Question 2: When is driving permitted?</h4>
+                            <p>Answer 2: Resume driving only when off narcotic pain relievers and comfortable making sudden movements.</p>
+                        </div>
                     </div>
-                    <div class="faq-item">
-                        <h4>Question 2: When is driving permitted?</h4>
-                        <p>Answer 2: Resume driving only when off narcotic pain relievers and comfortable making sudden movements.</p>
-                    </div>
-                </div>
+                </details>
 
                 <!-- Mohs Reconstruction -->
-                <div class="surgery-subcard">
-                    <h3><i class="fas fa-chevron-right"></i> Mohs Reconstruction</h3>
-                    <div class="faq-item">
-                        <h4>Question 1: How do I care for incision dressings?</h4>
-                        <p>Answer 1: Keep the surgical site clean and dry per your specific post-op wound care sheet.</p>
+                <details class="surgery-subcard">
+                    <summary>Mohs Reconstruction</summary>
+                    <div class="subcard-content">
+                        <div class="faq-item">
+                            <h4>Question 1: How do I care for incision dressings?</h4>
+                            <p>Answer 1: Keep the surgical site clean and dry per your specific post-op wound care sheet.</p>
+                        </div>
+                        <div class="faq-item">
+                            <h4>Question 2: When are sutures removed?</h4>
+                            <p>Answer 2: Follow-up suture removal typically occurs within 7 to 14 days post-procedure.</p>
+                        </div>
                     </div>
-                    <div class="faq-item">
-                        <h4>Question 2: When are sutures removed?</h4>
-                        <p>Answer 2: Follow-up suture removal typically occurs within 7 to 14 days post-procedure.</p>
-                    </div>
-                </div>
+                </details>
 
                 <!-- Hidradenitis surgery -->
-                <div class="surgery-subcard">
-                    <h3><i class="fas fa-chevron-right"></i> Hidradenitis surgery</h3>
-                    <div class="faq-item">
-                        <h4>Question 1: What signs indicate an infection?</h4>
-                        <p>Answer 1: Watch for spreading redness, worsening pain, foul odor, or fever, and call our clinic.</p>
+                <details class="surgery-subcard">
+                    <summary>Hidradenitis surgery</summary>
+                    <div class="subcard-content">
+                        <div class="faq-item">
+                            <h4>Question 1: What signs indicate an infection?</h4>
+                            <p>Answer 1: Watch for spreading redness, worsening pain, foul odor, or fever, and call our clinic.</p>
+                        </div>
+                        <div class="faq-item">
+                            <h4>Question 2: How are dressing changes performed?</h4>
+                            <p>Answer 2: Follow daily cleansing instructions using mild soap and water or saline as directed.</p>
+                        </div>
                     </div>
-                    <div class="faq-item">
-                        <h4>Question 2: How are dressing changes performed?</h4>
-                        <p>Answer 2: Follow daily cleansing instructions using mild soap and water or saline as directed.</p>
-                    </div>
-                </div>
+                </details>
 
                 <!-- Urethral dilation/Optilume -->
-                <div class="surgery-subcard">
-                    <h3><i class="fas fa-chevron-right"></i> Urethral dilation/Optilume</h3>
-                    <div class="faq-item">
-                        <h4>Question 1: What urinary symptoms are normal post-procedure?</h4>
-                        <p>Answer 1: Mild burning or blood-tinged urine can occur initially and should improve within days.</p>
+                <details class="surgery-subcard">
+                    <summary>Urethral dilation/Optilume</summary>
+                    <div class="subcard-content">
+                        <div class="faq-item">
+                            <h4>Question 1: What urinary symptoms are normal post-procedure?</h4>
+                            <p>Answer 1: Mild burning or blood-tinged urine can occur initially and should improve within days.</p>
+                        </div>
+                        <div class="faq-item">
+                            <h4>Question 2: When should I call the office?</h4>
+                            <p>Answer 2: Contact us immediately if you experience an inability to urinate or high fever.</p>
+                        </div>
                     </div>
-                    <div class="faq-item">
-                        <h4>Question 2: When should I call the office?</h4>
-                        <p>Answer 2: Contact us immediately if you experience an inability to urinate or high fever.</p>
-                    </div>
-                </div>
+                </details>
 
                 <!-- Vaginoplasty -->
-                <div class="surgery-subcard">
-                    <h3><i class="fas fa-chevron-right"></i> Vaginoplasty</h3>
-                    <div class="faq-item">
-                        <h4>Question 1: What does the dilation schedule entail?</h4>
-                        <p>Answer 1: Strict adherence to your prescribed dilation routine maintains vaginal depth and caliber.</p>
+                <details class="surgery-subcard">
+                    <summary>Vaginoplasty</summary>
+                    <div class="subcard-content">
+                        <div class="faq-item">
+                            <h4>Question 1: What does the dilation schedule entail?</h4>
+                            <p>Answer 1: Strict adherence to your prescribed dilation routine maintains vaginal depth and caliber.</p>
+                        </div>
+                        <div class="faq-item">
+                            <h4>Question 2: What lubricants are safe to use?</h4>
+                            <p>Answer 2: Use water-based lubricants exclusively to avoid irritating healing mucosal tissues.</p>
+                        </div>
                     </div>
-                    <div class="faq-item">
-                        <h4>Question 2: What lubricants are safe to use?</h4>
-                        <p>Answer 2: Use water-based lubricants exclusively to avoid irritating healing mucosal tissues.</p>
-                    </div>
-                </div>
+                </details>
 
                 <!-- Metoidioplasty -->
-                <div class="surgery-subcard">
-                    <h3><i class="fas fa-chevron-right"></i> Metoidioplasty</h3>
-                    <div class="faq-item">
-                        <h4>Question 1: What indicates a good urinary stream?</h4>
-                        <p>Answer 1: A steady stream without excessive straining as swelling gradually subsides.</p>
+                <details class="surgery-subcard">
+                    <summary>Metoidioplasty</summary>
+                    <div class="subcard-content">
+                        <div class="faq-item">
+                            <h4>Question 1: What indicates a good urinary stream?</h4>
+                            <p>Answer 1: A steady stream without excessive straining as swelling gradually subsides.</p>
+                        </div>
+                        <div class="faq-item">
+                            <h4>Question 2: When can I return to fitted clothing?</h4>
+                            <p>Answer 2: Stick to loose boxer briefs or athletic shorts until acute tissue healing is established.</p>
+                        </div>
                     </div>
-                    <div class="faq-item">
-                        <h4>Question 2: When can I return to fitted clothing?</h4>
-                        <p>Answer 2: Stick to loose boxer briefs or athletic shorts until acute tissue healing is established.</p>
-                    </div>
-                </div>
+                </details>
 
                 <!-- Phalloplasty (stage 2) -->
-                <div class="surgery-subcard">
-                    <h3><i class="fas fa-chevron-right"></i> Phalloplasty (stage 2)</h3>
-                    <div class="faq-item">
-                        <h4>Question 1: What activity restrictions are required?</h4>
-                        <p>Answer 1: Strict avoidance of heavy physical exertion and pressure on the surgical zone for several weeks.</p>
+                <details class="surgery-subcard">
+                    <summary>Phalloplasty (stage 2)</summary>
+                    <div class="subcard-content">
+                        <div class="faq-item">
+                            <h4>Question 1: What activity restrictions are required?</h4>
+                            <p>Answer 1: Strict avoidance of heavy physical exertion and pressure on the surgical zone for several weeks.</p>
+                        </div>
+                        <div class="faq-item">
+                            <h4>Question 2: Who do I contact for urgent post-op concerns?</h4>
+                            <p>Answer 2: Reach our on-call provider through the main hospital operator or clinic emergency line.</p>
+                        </div>
                     </div>
-                    <div class="faq-item">
-                        <h4>Question 2: Who do I contact for urgent post-op concerns?</h4>
-                        <p>Answer 2: Reach our on-call provider through the main hospital operator or clinic emergency line.</p>
-                    </div>
-                </div>
+                </details>
             </div>
 
         </div>
