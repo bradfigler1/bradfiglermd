@@ -60,6 +60,7 @@
 
         ul {
             list-style: none;
+            padding-left: 20px;
         }
 
         .container {
@@ -231,44 +232,57 @@
             display: inline-block;
         }
 
-        .surgery-subgroup {
-            margin-top: 25px;
-            padding-top: 20px;
-            border-top: 1px dashed var(--border-color);
-        }
-
-        .surgery-subgroup:first-of-type {
-            margin-top: 0;
-            padding-top: 0;
-            border-top: none;
-        }
-
-        .surgery-subgroup h3 {
-            font-size: 1.25rem;
-            color: var(--primary-navy);
-            margin-bottom: 15px;
-            font-family: 'Inter', sans-serif;
-            font-weight: 600;
-        }
-
         .faq-item {
-            margin-bottom: 16px;
+            margin-bottom: 24px;
             padding-left: 15px;
             border-left: 2px solid var(--carolina-blue);
         }
 
         .faq-item h4 {
-            font-size: 1rem;
+            font-size: 1.1rem;
             color: var(--text-dark);
-            margin-bottom: 4px;
+            margin-bottom: 8px;
             font-family: 'Inter', sans-serif;
             font-weight: 600;
         }
 
-        .faq-item p {
+        .faq-item p, .faq-item ul {
             color: var(--text-muted);
-            font-size: 0.92rem;
-            line-height: 1.6;
+            font-size: 0.95rem;
+            line-height: 1.7;
+        }
+
+        .faq-item ul {
+            list-style-type: disc;
+            margin-top: 8px;
+            margin-bottom: 8px;
+        }
+
+        .faq-item li {
+            margin-bottom: 6px;
+        }
+
+        /* Alert / Highlight boxes for contact and lights */
+        .alert-box-red {
+            background-color: #fef2f2;
+            border-left: 4px solid #ef4444;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 4px;
+        }
+        .alert-box-yellow {
+            background-color: #ffffed;
+            border-left: 4px solid #eab308;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 4px;
+        }
+        .alert-box-green {
+            background-color: #f0fdf4;
+            border-left: 4px solid #22c55e;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 4px;
         }
 
         /* Footer */
@@ -301,6 +315,7 @@
 
         .footer-links li {
             margin-bottom: 10px;
+            padding-left: 0;
         }
 
         .footer-links a {
@@ -403,14 +418,14 @@
     <!-- Quick FAQ Jump Menu & Surgery Row -->
     <div class="faq-jump-nav">
         <div class="container">
-            <!-- Row 1: Phase Jump Buttons (Distinct Style) -->
+            <!-- Row 1: Phase Jump Buttons (Distinct Style, no word 'surgeries') -->
             <div class="faq-jump-container">
                 <a href="#consult" class="faq-jump-btn"><i class="fas fa-calendar-alt"></i> Before your consult</a>
                 <a href="#before-surgery" class="faq-jump-btn"><i class="fas fa-clipboard-list"></i> Before surgery</a>
                 <a href="#surgery-day" class="faq-jump-btn"><i class="fas fa-hospital"></i> Day of surgery</a>
                 <a href="#after-surgery" class="faq-jump-btn"><i class="fas fa-heartbeat"></i> After surgery</a>
             </div>
-            <!-- Row 2: Specific Surgery Quick Filters (Subtle Pill Style) -->
+            <!-- Row 2: Specific Surgery Quick Filters -->
             <div class="faq-jump-container" style="margin-top: 12px;">
                 <a href="#urethroplasty" class="surgery-filter-btn">Urethroplasty</a>
                 <a href="#fistula" class="surgery-filter-btn">Rectourethral fistula repair</a>
@@ -433,25 +448,95 @@
             <div id="consult" class="faq-category-box">
                 <h2>Before your consult</h2>
                 <div class="faq-item">
-                    <h4>Question 1: What records should I bring?</h4>
-                    <p>Answer 1: Dummy answer for editing general consultation requirements.</p>
-                </div>
-                <div class="faq-item">
-                    <h4>Question 2: How do I prepare for my evaluation?</h4>
-                    <p>Answer 2: Dummy answer for editing diagnostic history and imaging reports.</p>
+                    <h4>What records should I bring?</h4>
+                    <p>Please bring copies of your past medical records, operative notes, imaging reports, and a list of current medications.</p>
                 </div>
             </div>
 
             <!-- SECTION 2: BEFORE SURGERY -->
             <div id="before-surgery" class="faq-category-box">
                 <h2>Before surgery</h2>
+                
                 <div class="faq-item">
-                    <h4>Question 1: What medications should I stop taking?</h4>
-                    <p>Answer 1: Dummy answer for editing regarding blood thinners, supplements, or prescriptions.</p>
+                    <h4>Scheduling Your Surgery</h4>
+                    <ul>
+                        <li>After your appointment, Dr. Figler will send the necessary information to our surgery scheduler.</li>
+                        <li>This process may take a few days.</li>
+                        <li>The scheduler will then call you to review available dates.</li>
+                        <li>If you do not receive a call within 7–10 days, please contact: <strong>Nikki Flood (Surgery Scheduler): 919-445-0449</strong></li>
+                    </ul>
                 </div>
+
                 <div class="faq-item">
-                    <h4>Question 2: When do I stop eating and drinking?</h4>
-                    <p>Answer 2: Dummy answer for editing regarding fasting timelines and pre-op preparation.</p>
+                    <h4>Risks of Surgery</h4>
+                    <p>All surgeries carry some risks, including those related to anesthesia (such as pneumonia, heart attack, or stroke), bleeding, and infection.</p>
+                    <p>Serious complications, although uncommon, may include:</p>
+                    <ul>
+                        <li>Deep vein thrombosis (blood clots in the legs)</li>
+                        <li>Pulmonary embolism (blood clots in the lungs)</li>
+                        <li>Stroke or heart attack</li>
+                        <li>Bowel or major blood vessel injury</li>
+                        <li>Death</li>
+                    </ul>
+                    <p>Risks specific to your procedure will be discussed in clinic and reviewed again when you sign your surgical consent.</p>
+                </div>
+
+                <div class="faq-item">
+                    <h4>Pre-Operative Appointments and Clearance</h4>
+                    <ul>
+                        <li>Dr. Figler will let you know if you need pre-op appointments or clearance letters (for example, from a cardiologist before stopping blood thinners).</li>
+                        <li>If you are unsure, check your clinic note in MyChart under “Surgery Scheduling Checklist.”</li>
+                    </ul>
+                </div>
+
+                <div class="faq-item">
+                    <h4>Cost of Surgery</h4>
+                    <p>To receive an estimate of your costs, please call the UNC Surgery Estimate Department: <strong>984-215-6899</strong></p>
+                </div>
+
+                <div class="faq-item">
+                    <h4>Blood Thinners and Medications</h4>
+                    <p>The following medications are usually stopped before surgery (with your prescriber’s approval):</p>
+                    <ul>
+                        <li>Aspirin 325 mg</li>
+                        <li>Plavix</li>
+                        <li>Ticlid</li>
+                        <li>Coumadin</li>
+                        <li>Brilinta</li>
+                        <li>Pradaxa</li>
+                        <li>Xarelto</li>
+                    </ul>
+                    <p>If you take one of these and have not already discussed a plan with Dr. Figler, please send us a MyChart message.</p>
+                    <p><strong>Other medications to continue:</strong></p>
+                    <ul>
+                        <li><strong>Aspirin 81 mg</strong> (for heart health): continue before and after surgery.</li>
+                        <li><strong>NSAIDs</strong> (Motrin, Ibuprofen, Aleve, Celebrex): continue before and after surgery.</li>
+                    </ul>
+                </div>
+
+                <div class="faq-item">
+                    <h4>Travel for Surgery</h4>
+                    <ul>
+                        <li>If traveling from outside the area, we recommend staying locally at least one night after discharge. Some surgeries require longer stays—your team will let you know.</li>
+                        <li><strong>Options include:</strong>
+                            <ul>
+                                <li><strong>MedStay</strong> (free reservation service): 877-633-7829 | medstaychapelhill.com</li>
+                                <li><strong>Holiday Inn Express Hillsborough:</strong> ~ $90/night | 202 Cardinal Dr, Hillsborough, NC | 877-859-5095</li>
+                                <li><strong>Rizzo Center</strong> (UNC hotel): ~ $140/night | call 919-913-2098, code UNCFAM</li>
+                                <li><strong>SECU Family House</strong> (subsidized housing): $45–60/night | 919-932-8000 | referral required | secufamilyhouse.org</li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <p>If driving or flying home after surgery, walk every 45 minutes to lower the risk of blood clots.</p>
+                </div>
+
+                <div class="faq-item">
+                    <h4>One Week Before Surgery</h4>
+                    <ul>
+                        <li>You will receive a MyChart message one week before surgery with critical information about your surgery.</li>
+                        <li>Please read this message, follow the instructions, and let us know if you have any questions.</li>
+                        <li>If you are not signed up for MyChart, sign up now at <a href="https://www.myuncchart.org/MyChart/signup" target="_blank" rel="noopener">www.myuncchart.org/MyChart/signup</a></li>
+                    </ul>
                 </div>
             </div>
 
@@ -459,25 +544,100 @@
             <div id="surgery-day" class="faq-category-box">
                 <h2>Day of surgery</h2>
                 <div class="faq-item">
-                    <h4>Question 1: What time should I arrive?</h4>
-                    <p>Answer 1: Dummy answer for editing regarding arrival windows and check-in procedures.</p>
-                </div>
-                <div class="faq-item">
-                    <h4>Question 2: What should I wear and bring?</h4>
-                    <p>Answer 2: Dummy answer for editing regarding loose clothing, escort requirements, and personal items.</p>
+                    <h4>Day of Surgery Guidelines</h4>
+                    <ul>
+                        <li>Most surgeries are at UNC Hospitals Hillsborough Campus (430 Waterstone Dr, Hillsborough, NC). Some are at UNC Hospitals Main Campus (101 Manning Dr, Chapel Hill, NC).</li>
+                        <li>You will receive a call the business day before surgery with your arrival time.</li>
+                        <li>If discharged the same day, you must have:
+                            <ul>
+                                <li>A responsible adult (age 18+) to drive you home.</li>
+                                <li>Someone to stay with you after discharge.</li>
+                                <li>Uber/Lyft/taxis are not allowed after anesthesia.</li>
+                            </ul>
+                        </li>
+                    </ul>
                 </div>
             </div>
 
             <!-- SECTION 4: AFTER SURGERY -->
             <div id="after-surgery" class="faq-category-box">
                 <h2>After surgery</h2>
+                
                 <div class="faq-item">
-                    <h4>Question 1: When are follow-up appointments scheduled?</h4>
-                    <p>Answer 1: Dummy answer for editing regarding catheter checks, dressing removals, and recovery milestones.</p>
+                    <h4>General Post-Operative Instructions</h4>
+                    <ul>
+                        <li><strong>Driving:</strong> No driving while taking pain medicine, and for at least 24 hours after anesthesia.</li>
+                        <li><strong>Activity:</strong> Walking is encouraged to prevent blood clots.</li>
+                        <li><strong>Showering:</strong> You may shower, but do not soak wounds for 2 weeks. Wash gently with mild soap, pat dry, and allow 10–15 minutes before dressing. A hairdryer on cool setting can help dry incisions.</li>
+                        <li><strong>Incision:</strong> Some swelling and bruising is normal, lasting 2–3 weeks.</li>
+                        <li><strong>Sexual activity:</strong> Avoid until cleared by your surgical team.</li>
+                    </ul>
                 </div>
+
                 <div class="faq-item">
-                    <h4>Question 2: What restrictions apply during recovery?</h4>
-                    <p>Answer 2: Dummy answer for editing regarding activity limits, lifting, and post-op care.</p>
+                    <h4>Post-Operative Appointment</h4>
+                    <ul>
+                        <li>A follow-up appointment will be arranged after surgery.</li>
+                        <li>You will usually receive a call 1–2 days after surgery to schedule.</li>
+                        <li>If you do not hear from us within 1 week, please send a MyChart message (preferred) or call.</li>
+                    </ul>
+                </div>
+
+                <div class="faq-item">
+                    <h4>FMLA / Work Forms</h4>
+                    <p>If you need FMLA or other work forms completed:</p>
+                    <ul>
+                        <li>Upload them through MyChart (preferred), or</li>
+                        <li>Leave them with the front desk staff.</li>
+                    </ul>
+                </div>
+
+                <div class="faq-item">
+                    <h4>When to Contact Us After Surgery</h4>
+                    
+                    <div class="alert-box-red">
+                        <h4 style="color: #991b1b; margin-bottom: 5px;"><i class="fas fa-exclamation-circle"></i> Red Light – Call 911 or go to the ER immediately:</h4>
+                        <ul style="margin-bottom: 0;">
+                            <li>Bleeding that will not stop</li>
+                            <li>Trouble breathing or chest pain</li>
+                            <li>Passing out or new seizure</li>
+                            <li>Thoughts of harming yourself or others</li>
+                        </ul>
+                    </div>
+
+                    <div class="alert-box-yellow">
+                        <h4 style="color: #854d0e; margin-bottom: 5px;"><i class="fas fa-exclamation-triangle"></i> Yellow Light – Call our office the same day:</h4>
+                        <ul style="margin-bottom: 0;">
+                            <li>New or worsening pain</li>
+                            <li>Fever >101°F</li>
+                            <li>Nausea/vomiting preventing eating or drinking</li>
+                            <li>Shortness of breath or worsening cough with mucus</li>
+                            <li>No urine for 12 hours</li>
+                            <li>New swelling/pain in one leg</li>
+                            <li>Confusion or vision changes</li>
+                            <li>Depression/anxiety</li>
+                            <li>Catheter or tube issues (falls out, clogged)</li>
+                            <li>Wound problems (opens, spreading redness, pus, rapid swelling)</li>
+                        </ul>
+                    </div>
+
+                    <div class="alert-box-green">
+                        <h4 style="color: #166534; margin-bottom: 5px;"><i class="fas fa-check-circle"></i> Green Light – Symptoms under control:</h4>
+                        <ul style="margin-bottom: 0;">
+                            <li>No new or worsening issues</li>
+                            <li>Able to eat, drink, and take medications</li>
+                        </ul>
+                    </div>
+
+                    <p style="margin-top: 15px;"><strong>Non-urgent questions:</strong> Send a MyChart message. These are triaged by staff—please allow up to 1 week for a reply. Call for urgent concerns.</p>
+                </div>
+
+                <div class="faq-item">
+                    <h4>Contact Information</h4>
+                    <ul>
+                        <li><strong>Weekdays (8 AM – 4 PM):</strong> Urology Clinic 984-974-7337</li>
+                        <li><strong>Nights & weekends (emergency):</strong> Call 984-974-1000 and ask for the Urology resident on call</li>
+                    </ul>
                 </div>
             </div>
 
