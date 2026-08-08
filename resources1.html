@@ -146,7 +146,7 @@
             font-size: 1.1rem;
         }
 
-        /* Quick FAQ Jump Menu & Surgery Filter Row */
+        /* Quick FAQ Jump Menu & Surgery Row */
         .faq-jump-nav {
             background-color: var(--white);
             border-bottom: 1px solid var(--border-color);
@@ -161,7 +161,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            gap: 15px;
+            gap: 12px;
             flex-wrap: wrap;
             margin-bottom: 12px;
         }
@@ -170,36 +170,41 @@
             margin-bottom: 0;
         }
 
+        /* Distinct Row 1 Buttons (Phase Buttons) */
         .faq-jump-btn {
-            background-color: var(--bg-light);
-            color: var(--primary-navy);
-            border: 1px solid var(--border-color);
-            padding: 8px 16px;
-            border-radius: 20px;
-            font-size: 0.85rem;
+            background-color: var(--primary-navy);
+            color: var(--white);
+            border: 1px solid var(--primary-navy);
+            padding: 10px 18px;
+            border-radius: 6px;
+            font-size: 0.9rem;
             font-weight: 600;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
             transition: var(--transition);
         }
 
         .faq-jump-btn:hover {
             background-color: var(--carolina-blue);
-            color: var(--white);
             border-color: var(--carolina-blue);
+            color: var(--white);
         }
 
+        /* Row 2 Buttons (Surgery Buttons) */
         .surgery-filter-btn {
-            background-color: var(--white);
-            color: var(--text-dark);
-            border: 1px dashed var(--carolina-blue);
+            background-color: var(--bg-light);
+            color: var(--primary-navy);
+            border: 1px solid var(--border-color);
             padding: 6px 14px;
-            border-radius: 16px;
+            border-radius: 20px;
             font-size: 0.8rem;
             font-weight: 500;
+            transition: var(--transition);
         }
 
         .surgery-filter-btn:hover {
             background-color: var(--carolina-blue);
             color: var(--white);
+            border-color: var(--carolina-blue);
         }
 
         /* Main Content Section */
@@ -224,6 +229,26 @@
             padding-bottom: 12px;
             border-bottom: 3px solid var(--carolina-blue);
             display: inline-block;
+        }
+
+        .surgery-subgroup {
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 1px dashed var(--border-color);
+        }
+
+        .surgery-subgroup:first-of-type {
+            margin-top: 0;
+            padding-top: 0;
+            border-top: none;
+        }
+
+        .surgery-subgroup h3 {
+            font-size: 1.25rem;
+            color: var(--primary-navy);
+            margin-bottom: 15px;
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
         }
 
         .faq-item {
@@ -378,25 +403,24 @@
     <!-- Quick FAQ Jump Menu & Surgery Row -->
     <div class="faq-jump-nav">
         <div class="container">
-            <!-- Row 1: Phase Jump Buttons -->
+            <!-- Row 1: Phase Jump Buttons (Distinct Style) -->
             <div class="faq-jump-container">
                 <a href="#consult" class="faq-jump-btn"><i class="fas fa-calendar-alt"></i> Before your consult</a>
                 <a href="#before-surgery" class="faq-jump-btn"><i class="fas fa-clipboard-list"></i> Before surgery</a>
                 <a href="#surgery-day" class="faq-jump-btn"><i class="fas fa-hospital"></i> Day of surgery</a>
                 <a href="#after-surgery" class="faq-jump-btn"><i class="fas fa-heartbeat"></i> After surgery</a>
             </div>
-            <!-- Row 2: Specific Surgery Quick Filters -->
-            <div class="faq-jump-container" style="margin-top: 10px;">
-                <span style="font-size: 0.8rem; font-weight: 600; color: var(--text-muted); margin-right: 5px;">Surgeries:</span>
-                <a href="#consult" class="surgery-filter-btn">Urethroplasty</a>
-                <a href="#consult" class="surgery-filter-btn">Rectourethral fistula repair</a>
-                <a href="#consult" class="surgery-filter-btn">Buried penis repair</a>
-                <a href="#consult" class="surgery-filter-btn">Mohs reconstruction</a>
-                <a href="#consult" class="surgery-filter-btn">Hidradenitis surgery</a>
-                <a href="#consult" class="surgery-filter-btn">Urethral dilation/Optilume</a>
-                <a href="#consult" class="surgery-filter-btn">Vaginoplasty</a>
-                <a href="#consult" class="surgery-filter-btn">Metoidioplasty</a>
-                <a href="#consult" class="surgery-filter-btn">Phalloplasty (stage 2)</a>
+            <!-- Row 2: Specific Surgery Quick Filters (Subtle Pill Style) -->
+            <div class="faq-jump-container" style="margin-top: 12px;">
+                <a href="#urethroplasty" class="surgery-filter-btn">Urethroplasty</a>
+                <a href="#fistula" class="surgery-filter-btn">Rectourethral fistula repair</a>
+                <a href="#buried-penis" class="surgery-filter-btn">Buried penis repair</a>
+                <a href="#mohs" class="surgery-filter-btn">Mohs reconstruction</a>
+                <a href="#hidradenitis" class="surgery-filter-btn">Hidradenitis surgery</a>
+                <a href="#dilation" class="surgery-filter-btn">Urethral dilation/Optilume</a>
+                <a href="#vaginoplasty" class="surgery-filter-btn">Vaginoplasty</a>
+                <a href="#metoidioplasty" class="surgery-filter-btn">Metoidioplasty</a>
+                <a href="#phalloplasty" class="surgery-filter-btn">Phalloplasty (stage 2)</a>
             </div>
         </div>
     </div>
@@ -410,11 +434,11 @@
                 <h2>Before your consult</h2>
                 <div class="faq-item">
                     <h4>Question 1: What records should I bring?</h4>
-                    <p>Answer 1: Dummy answer for editing your general or specific consultation requirements.</p>
+                    <p>Answer 1: Dummy answer for editing general consultation requirements.</p>
                 </div>
                 <div class="faq-item">
                     <h4>Question 2: How do I prepare for my evaluation?</h4>
-                    <p>Answer 2: Dummy answer for editing regarding specific diagnostic history or imaging reports.</p>
+                    <p>Answer 2: Dummy answer for editing diagnostic history and imaging reports.</p>
                 </div>
             </div>
 
@@ -454,6 +478,116 @@
                 <div class="faq-item">
                     <h4>Question 2: What restrictions apply during recovery?</h4>
                     <p>Answer 2: Dummy answer for editing regarding activity limits, lifting, and post-op care.</p>
+                </div>
+            </div>
+
+            <!-- SURGERY-SPECIFIC FAQ SECTIONS -->
+            
+            <div id="urethroplasty" class="faq-category-box">
+                <h2>Urethroplasty FAQs</h2>
+                <div class="faq-item">
+                    <h4>Question 1: [Placeholder for Urethroplasty Question 1]</h4>
+                    <p>Answer 1: Dummy answer for editing.</p>
+                </div>
+                <div class="faq-item">
+                    <h4>Question 2: [Placeholder for Urethroplasty Question 2]</h4>
+                    <p>Answer 2: Dummy answer for editing.</p>
+                </div>
+            </div>
+
+            <div id="fistula" class="faq-category-box">
+                <h2>Rectourethral fistula repair FAQs</h2>
+                <div class="faq-item">
+                    <h4>Question 1: [Placeholder for Fistula Repair Question 1]</h4>
+                    <p>Answer 1: Dummy answer for editing.</p>
+                </div>
+                <div class="faq-item">
+                    <h4>Question 2: [Placeholder for Fistula Repair Question 2]</h4>
+                    <p>Answer 2: Dummy answer for editing.</p>
+                </div>
+            </div>
+
+            <div id="buried-penis" class="faq-category-box">
+                <h2>Buried penis repair FAQs</h2>
+                <div class="faq-item">
+                    <h4>Question 1: [Placeholder for Buried Penis Question 1]</h4>
+                    <p>Answer 1: Dummy answer for editing.</p>
+                </div>
+                <div class="faq-item">
+                    <h4>Question 2: [Placeholder for Buried Penis Question 2]</h4>
+                    <p>Answer 2: Dummy answer for editing.</p>
+                </div>
+            </div>
+
+            <div id="mohs" class="faq-category-box">
+                <h2>Mohs reconstruction FAQs</h2>
+                <div class="faq-item">
+                    <h4>Question 1: [Placeholder for Mohs Reconstruction Question 1]</h4>
+                    <p>Answer 1: Dummy answer for editing.</p>
+                </div>
+                <div class="faq-item">
+                    <h4>Question 2: [Placeholder for Mohs Reconstruction Question 2]</h4>
+                    <p>Answer 2: Dummy answer for editing.</p>
+                </div>
+            </div>
+
+            <div id="hidradenitis" class="faq-category-box">
+                <h2>Hidradenitis surgery FAQs</h2>
+                <div class="faq-item">
+                    <h4>Question 1: [Placeholder for Hidradenitis Surgery Question 1]</h4>
+                    <p>Answer 1: Dummy answer for editing.</p>
+                </div>
+                <div class="faq-item">
+                    <h4>Question 2: [Placeholder for Hidradenitis Surgery Question 2]</h4>
+                    <p>Answer 2: Dummy answer for editing.</p>
+                </div>
+            </div>
+
+            <div id="dilation" class="faq-category-box">
+                <h2>Urethral dilation/Optilume FAQs</h2>
+                <div class="faq-item">
+                    <h4>Question 1: [Placeholder for Dilation/Optilume Question 1]</h4>
+                    <p>Answer 1: Dummy answer for editing.</p>
+                </div>
+                <div class="faq-item">
+                    <h4>Question 2: [Placeholder for Dilation/Optilume Question 2]</h4>
+                    <p>Answer 2: Dummy answer for editing.</p>
+                </div>
+            </div>
+
+            <div id="vaginoplasty" class="faq-category-box">
+                <h2>Vaginoplasty FAQs</h2>
+                <div class="faq-item">
+                    <h4>Question 1: [Placeholder for Vaginoplasty Question 1]</h4>
+                    <p>Answer 1: Dummy answer for editing.</p>
+                </div>
+                <div class="faq-item">
+                    <h4>Question 2: [Placeholder for Vaginoplasty Question 2]</h4>
+                    <p>Answer 2: Dummy answer for editing.</p>
+                </div>
+            </div>
+
+            <div id="metoidioplasty" class="faq-category-box">
+                <h2>Metoidioplasty FAQs</h2>
+                <div class="faq-item">
+                    <h4>Question 1: [Placeholder for Metoidioplasty Question 1]</h4>
+                    <p>Answer 1: Dummy answer for editing.</p>
+                </div>
+                <div class="faq-item">
+                    <h4>Question 2: [Placeholder for Metoidioplasty Question 2]</h4>
+                    <p>Answer 2: Dummy answer for editing.</p>
+                </div>
+            </div>
+
+            <div id="phalloplasty" class="faq-category-box">
+                <h2>Phalloplasty (stage 2) FAQs</h2>
+                <div class="faq-item">
+                    <h4>Question 1: [Placeholder for Phalloplasty Question 1]</h4>
+                    <p>Answer 1: Dummy answer for editing.</p>
+                </div>
+                <div class="faq-item">
+                    <h4>Question 2: [Placeholder for Phalloplasty Question 2]</h4>
+                    <p>Answer 2: Dummy answer for editing.</p>
                 </div>
             </div>
 
