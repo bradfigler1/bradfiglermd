@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rectourethral fistula</title>
+    <!-- Google Fonts for typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300&display=swap" rel="stylesheet">
+    <!-- FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary-navy: #13294B;
+            --primary-navy-dark: #0a182f;
+            --carolina-blue: #4B9CD3;
+            --carolina-blue-hover: #3582b5;
+            --text-dark: #2c3e50;
+            --text-muted: #556575;
+            --bg-light: #f8fafc;
+            --white: #ffffff;
+            --border-color: #e2e8f0;
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto;
+            color: var(--text-dark);
+            background-color: var(--white);
+            line-height: 1.6;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Merriweather', serif, Georgia, serif;
+            color: var(--primary-navy);
+            font-weight: 700;
+        }
+
+        a {
+            text-decoration: none;
+            color: var(--carolina-blue);
+            transition: var(--transition);
+        }
+
+        a:hover {
+            color: var(--primary-navy);
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header & Navigation */
+        header {
+            background-color: var(--white);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 0;
+        }
+
+        .brand-logo {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .brand-name {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--primary-navy);
+            font-family: 'Merriweather', serif;
+        }
+
+        .brand-title {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            font-weight: 500;
+            letter-spacing: 0.5px;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: var(--text-dark);
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            color: var(--carolina-blue);
+        }
+
+        /* Page Header Banner */
+        .page-header {
+            background: linear-gradient(135deg, var(--primary-navy) 0%, var(--primary-navy-dark) 100%);
+            color: var(--white);
+            padding: 60px 0;
+            text-align: center;
+        }
+
+        .page-header h1 {
+            font-size: 2.5rem;
+            color: var(--white);
+            margin-bottom: 10px;
+        }
+
+        /* Main Content Section */
+        .content-section {
+            padding: 80px 0;
+            background-color: var(--bg-light);
+            min-height: 400px;
+        }
+
+        .content-box {
+            background: var(--white);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 50px;
+            text-align: center;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02);
+        }
+
+        .content-box h2 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            color: var(--primary-navy);
+        }
+
+        .content-box p {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            margin-bottom: 30px;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 600;
+            color: var(--carolina-blue);
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--primary-navy-dark);
+            color: #cbd5e1;
+            padding: 60px 0 30px 0;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-col h4 {
+            color: var(--white);
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+        }
+
+        .footer-col p {
+            font-size: 0.9rem;
+            line-height: 1.7;
+            margin-bottom: 15px;
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+
+        .footer-links a {
+            color: #94a3b8;
+            font-size: 0.9rem;
+        }
+
+        .footer-links a:hover {
+            color: var(--carolina-blue);
+        }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 25px;
+            text-align: center;
+            font-size: 0.85rem;
+            color: #94a3b8;
+        }
+
+        .footer-badge-container img {
+            max-height: 50px;
+            width: auto;
+            background-color: #ffffff;
+            padding: 4px;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header & Navigation -->
+    <header>
+        <div class="container navbar">
+            <a href="index.html" class="brand-logo">
+                <span class="brand-name">Brad Figler MD FACS</span>
+                <span class="brand-title">Genitourinary Reconstructive Surgery</span>
+            </a>
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="index.html#home">Home</a></li>
+                    <li><a href="index.html#expertise">Expertise</a></li>
+                    <li><a href="index.html#background">Background</a></li>
+                    <li><a href="index.html#videos">Videos</a></li>
+                    <li><a href="index.html#research">Publications</a></li>
+                    <li><a href="resources1.html" class="active">Patient Resources</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Page Header -->
+    <div class="page-header">
+        <div class="container">
+            <h1>Condition Information</h1>
+            <p>Detailed resources, FAQs, and educational materials.</p>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <section class="content-section">
+        <div class="container">
+            <div class="content-box">
+                <h2>More content coming soon</h2>
+                <p>We are currently updating our educational materials for this condition. Please check back later or contact our clinic with immediate questions.</p>
+                <a href="resources1.html" class="back-link"><i class="fas fa-arrow-left"></i> Back to Patient Resources</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Professional Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <h4>Brad Figler MD FACS</h4>
+                    <p>Genitourinary Reconstructive Surgery</p>
+                    <div class="footer-badge-container">
+                        <a href="https://www.castleconnolly.com/top-doctors/bradley-d-figler-urology-128cc226020" target="_blank" rel="noopener">
+                            <img src="castle-connolly-logo.png" alt="Castle Connolly Top Doctors">
+                        </a>
+                    </div>
+                </div>
+                <div class="footer-col">
+                    <h4>Quick Links</h4>
+                    <ul class="footer-links">
+                        <li><a href="index.html#home">Home</a></li>
+                        <li><a href="index.html#expertise">Expertise</a></li>
+                        <li><a href="index.html#background">Background</a></li>
+                        <li><a href="index.html#videos">Educational Videos</a></li>
+                        <li><a href="index.html#research">PubMed Publications</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Resources</h4>
+                    <ul class="footer-links">
+                        <li><a href="resources1.html">Patient Resources</a></li>
+                        <li><a href="https://www.med.unc.edu/urology/contact-us/" target="_blank" rel="noopener">Patient Referrals</a></li>
+                        <li><a href="https://www.youtube.com/@uncurologicreconstruction8891" target="_blank" rel="noopener">YouTube Video Channel</a></li>
+                        <li><a href="https://www.ncbi.nlm.nih.gov/pubmed/?term=Figler+BD%5BAuthor%5D" target="_blank" rel="noopener">PubMed Bibliography</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Brad Figler MD FACS. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
