@@ -447,11 +447,8 @@
         }
 
         .footer-badge-container img {
-            max-height: 50px;
+            max-height: 45px;
             width: auto;
-            background-color: #ffffff;
-            padding: 4px;
-            border-radius: 4px;
             transition: var(--transition);
         }
 
@@ -612,6 +609,117 @@
             </div>
 
             <div class="bg-content-box">
-                <p>Dr. Figler received his medical degree from Case Western Reserve University School of Medicine and completed his residency training in Urology at Emory University Hospital in Atlanta, GA. Following residency, Dr. Figler completed a two-year fellowship in Genitourinary Trauma and Male Reconstruction at the University of Washington and Harborview Medical Center with Dr. Hunter Wessells, a pioneer in Genitourinary Trauma and Male Reconstruction. During this time, Dr. Figler also worked atIt looks like you didn't include the previous version of your file or details about what you want to change! 
+                <p>Dr. Figler received his medical degree from Case Western Reserve University School of Medicine and completed his residency training in Urology at Emory University Hospital in Atlanta, GA. Following residency, Dr. Figler completed a two-year fellowship in Genitourinary Trauma and Male Reconstruction at the University of Washington and Harborview Medical Center with Dr. Hunter Wessells, a pioneer in Genitourinary Trauma and Male Reconstruction. During this time, Dr. Figler also worked at the Harborview Injury Prevention and Research Center, where he pursued an interest in health services research. After his fellowship training, Dr. Figler worked at Thomas Jefferson University in Philadelphia, where he founded and directed the Division of Reconstructive Urology. In 2016, Dr. Figler joined UNC, where he serves as Professor of Urology and Plastic Surgery.</p>
+                <p>In July 2022, Dr. Figler started the fellowship in Genitourinary Reconstructive Surgery, and currently serves as the Fellowship Director.</p>
+                <p>Dr. Figler’s research interests include clinical outcomes and innovative techniques in genitourinary reconstruction, access to urologic surgery and strategies to address barriers.</p>
+            </div>
+        </div>
+    </section>
 
-Could you please share your current `index.html` code or let me know what specific updates, layout adjustments, or content changes you need? Once you provide that, I'll generate the updated file for you right away.
+    <!-- Videos Section (Educational Library) -->
+    <section id="videos" class="videos-section">
+        <div class="container">
+            <div class="section-title">
+                <h2>Educational Video Library</h2>
+                <p>Surgical technique demonstrations, patient education modules, and academic presentations.</p>
+            </div>
+
+            <div class="channel-cta-banner">
+                <p>Explore our complete library of surgical videos and clinical presentations on our official YouTube channel.</p>
+                <a href="https://www.youtube.com/@uncurologicreconstruction8891" target="_blank" rel="noopener" class="btn-primary">
+                    <i class="fab fa-youtube"></i> Visit UNC Urologic Reconstruction YouTube Channel
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Research & Publications Section -->
+    <section id="research" class="research-section">
+        <div class="container">
+            <div class="section-title">
+                <h2>Research & Publications</h2>
+                <p>Advancing the science and safety of reconstructive urology through evidence-based discovery.</p>
+            </div>
+
+            <div class="research-card">
+                <div class="research-details">
+                    <h3>Active Clinical Research & Innovations</h3>
+                    <p>Dr. Figler’s ongoing academic work focuses heavily on evaluating clinical outcomes in genitourinary reconstruction, assessing healthcare access barriers, and optimizing surgical innovations. Review his extensive portfolio of peer-reviewed journal articles and scientific contributions on PubMed.</p>
+                </div>
+                <div class="research-action">
+                    <a href="https://www.ncbi.nlm.nih.gov/pubmed/?term=Figler+BD%5BAuthor%5D" target="_blank" rel="noopener" class="btn-pubmed">
+                        <i class="fas fa-external-link-alt"></i> View PubMed Publications
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Professional Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <h4>Brad Figler MD FACS</h4>
+                    <p>Genitourinary Reconstructive Surgery</p>
+                    <div class="footer-badge-container">
+                        <a href="https://www.castleconnolly.com/top-doctors/bradley-d-figler-urology-128cc226020" target="_blank" rel="noopener">
+                            <img src="https://www.med.unc.edu/urology/wp-content/uploads/sites/637/2020/11/Castle_Connolly_Top_Doctors-560x101.png" alt="Castle Connolly Top Doctors">
+                        </a>
+                    </div>
+                </div>
+                <div class="footer-col">
+                    <h4>Quick Links</h4>
+                    <ul class="footer-links">
+                        <li><a href="index.html#home">Home</a></li>
+                        <li><a href="index.html#expertise">Expertise</a></li>
+                        <li><a href="index.html#background">Background</a></li>
+                        <li><a href="index.html#videos">Videos</a></li>
+                        <li><a href="index.html#research">Publications</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Resources</h4>
+                    <ul class="footer-links">
+                        <li><a href="resources1.html">Patient Resources</a></li>
+                        <li><a href="https://www.med.unc.edu/urology/contact-us/" target="_blank" rel="noopener">Patient Referrals</a></li>
+                        <li><a href="https://www.youtube.com/@uncurologicreconstruction8891" target="_blank" rel="noopener">YouTube Video Channel</a></li>
+                        <li><a href="https://www.ncbi.nlm.nih.gov/pubmed/?term=Figler+BD%5BAuthor%5D" target="_blank" rel="noopener">PubMed Bibliography</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Brad Figler MD FACS. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Minimal Utility JavaScript for Mobile Navigation Toggle -->
+    <script>
+        const mobileToggle = document.getElementById('mobileToggle');
+        const navLinks = document.getElementById('navLinks');
+
+        mobileToggle.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+            const icon = mobileToggle.querySelector('i');
+            if (navLinks.classList.contains('active')) {
+                icon.classList.remove('fa-bars');
+                icon.classList.add('fa-times');
+            } else {
+                icon.classList.remove('fa-times');
+                icon.classList.add('fa-bars');
+            }
+        });
+
+        // Close mobile menu on link click
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                navLinks.classList.remove('active');
+                const icon = mobileToggle.querySelector('i');
+                icon.classList.remove('fa-times');
+                icon.classList.add('fa-bars');
+            });
+        });
+    </script>
+</body>
+</html>
