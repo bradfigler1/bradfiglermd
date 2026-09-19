@@ -8,9 +8,9 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- Lucide Icons CDN -->
   <script src="https://unpkg.com/lucide@latest"></script>
-  <!-- PapaParse for fast, robust CSV parsing -->
+  <!-- PapaParse for parsing CSVs -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
-  <!-- QRCode.js for generating QR codes -->
+  <!-- QRCode.js for client-side QR generation -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
   
   <style>
@@ -34,16 +34,16 @@
       font-size: 10px;
     }
 
-    /* Print Formatting: Strict 1-page per card fit */
+    /* Print Formatting: Strict 1-Page per procedure */
     @media print {
       @page {
         size: letter portrait;
-        margin: 0.35in;
+        margin: 0.3in;
       }
       body {
         background: #ffffff !important;
         color: #000000 !important;
-        font-size: 9.5pt;
+        font-size: 9pt;
       }
       .no-print {
         display: none !important;
@@ -51,21 +51,21 @@
       .print-case-card {
         page-break-after: always;
         break-after: page;
-        border: 1.5pt solid #334155 !important;
+        border: 1.5pt solid #1e293b !important;
         box-shadow: none !important;
         margin-bottom: 0 !important;
-        padding: 8pt !important;
-        max-height: 10.2in;
+        padding: 6pt !important;
+        max-height: 10.3in;
         overflow: hidden;
       }
       .print-grid {
         display: grid !important;
         grid-template-columns: repeat(3, 1fr) !important;
-        gap: 6pt !important;
+        gap: 5pt !important;
       }
       .print-box {
         border: 1pt solid #94a3b8 !important;
-        padding: 5pt !important;
+        padding: 4.5pt !important;
         background: #ffffff !important;
       }
       .print-header {
@@ -73,7 +73,7 @@
         color: #ffffff !important;
         -webkit-print-color-adjust: exact;
         print-color-adjust: exact;
-        padding: 8pt !important;
+        padding: 6pt !important;
       }
       .print-qr {
         display: block !important;
@@ -83,19 +83,19 @@
 </head>
 <body class="bg-slate-100 text-slate-900 min-h-screen flex flex-col font-sans selection:bg-teal-200">
 
-  <!-- PASSWORD AUTHENTICATION SCREEN -->
+  <!-- PASSWORD AUTHENTICATION SCREEN (Password is never displayed) -->
   <div id="authScreen" class="fixed inset-0 bg-slate-950 z-50 flex items-center justify-center p-4">
     <div class="bg-white rounded-2xl shadow-2xl max-w-sm w-full p-7 border border-slate-200 text-center">
       <div class="w-14 h-14 bg-teal-50 text-teal-700 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-xs">
         <i data-lucide="lock" class="w-7 h-7"></i>
       </div>
-      <h1 class="text-xl font-extrabold text-slate-900 tracking-tight">OR Clinical Binder</h1>
+      <h1 class="text-xl font-black text-slate-900 tracking-tight">OR Clinical Binder</h1>
       <p class="text-xs text-slate-500 font-medium mt-1 mb-6">Dr. Brad Figler | Reconstructive Urology</p>
 
       <form onsubmit="handleAuthSubmit(event)">
         <div class="mb-4 text-left">
           <label class="block text-[11px] font-bold uppercase tracking-wider text-slate-600 mb-1.5">Enter Passcode</label>
-          <input type="password" id="passInput" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-teal-600 focus:outline-none text-slate-900 font-medium" placeholder="Passcode" required autofocus />
+          <input type="password" id="passInput" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-teal-600 focus:outline-none text-slate-900 font-medium" placeholder="••••••••" required autofocus />
           <p id="passError" class="text-xs text-red-600 font-semibold mt-2 hidden">Incorrect passcode. Please try again.</p>
         </div>
         <button type="submit" class="w-full py-2.5 bg-teal-700 hover:bg-teal-800 text-white font-bold rounded-xl shadow transition flex items-center justify-center space-x-2">
@@ -106,31 +106,31 @@
     </div>
   </div>
 
-  <!-- NAVIGATION BAR (Fixed top on screen) -->
+  <!-- NAVIGATION BAR -->
   <header class="bg-white border-b border-slate-200 sticky top-0 z-30 shadow-xs no-print">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="flex items-center justify-between h-16 gap-3">
+      <div class="flex items-center justify-between h-16 gap-2 sm:gap-4">
         
         <!-- Left Branding -->
         <div class="flex items-center space-x-2 shrink-0 cursor-pointer" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
-          <div class="w-9 h-9 rounded-lg bg-teal-700 text-white flex items-center justify-center">
+          <div class="w-9 h-9 rounded-lg bg-teal-700 text-white flex items-center justify-center shadow-xs">
             <i data-lucide="book-open" class="w-5 h-5"></i>
           </div>
           <div>
-            <span class="font-extrabold text-base sm:text-lg tracking-tight text-slate-900 block leading-tight">Figler OR Binder</span>
-            <span class="text-[10px] text-teal-800 font-semibold uppercase tracking-wider hidden sm:block">UNC Urology</span>
+            <span class="font-black text-base sm:text-lg tracking-tight text-slate-900 block leading-tight">Figler OR Binder</span>
+            <span class="text-[10px] text-teal-800 font-bold uppercase tracking-wider hidden sm:block">UNC Urology</span>
           </div>
         </div>
 
-        <!-- Procedure Dropdown Selector -->
-        <div class="flex-1 max-w-md mx-1 sm:mx-4">
-          <select id="procedureSelect" onchange="onSelectProcedure(this.value)" class="w-full bg-slate-50 border-2 border-teal-600 text-slate-900 text-xs sm:text-sm font-bold rounded-xl px-3 py-2 shadow-xs focus:ring-2 focus:ring-teal-500 focus:outline-none transition">
+        <!-- Procedure Dropdown Selector (Strictly Ordered) -->
+        <div class="flex-1 max-w-lg mx-1 sm:mx-2">
+          <select id="procedureSelect" onchange="onSelectProcedure(this.value)" class="w-full bg-slate-50 border-2 border-teal-600 text-slate-900 text-xs sm:text-sm font-bold rounded-xl px-3 py-2 shadow-xs focus:ring-2 focus:ring-teal-500 focus:outline-none transition truncate">
             <option value="">Loading procedures from CSV...</option>
           </select>
         </div>
 
         <!-- Action Controls -->
-        <div class="flex items-center space-x-1.5 sm:space-x-2 shrink-0">
+        <div class="flex items-center space-x-1 sm:space-x-2 shrink-0">
           <!-- Print Current Case -->
           <button onclick="printCurrentCard()" title="Print Current Case on 1 Page" class="px-2.5 sm:px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-bold rounded-lg border border-slate-300 flex items-center space-x-1.5 transition">
             <i data-lucide="printer" class="w-4 h-4"></i>
@@ -165,26 +165,26 @@
       <button onclick="loadCSVData()" class="underline font-bold text-amber-800">Retry</button>
     </div>
 
-    <!-- SINGLE CASE DISPLAY CONTAINER (Default active on screen) -->
+    <!-- SINGLE CASE DISPLAY CONTAINER (Active on screen) -->
     <div id="singleCardWrapper" class="space-y-6">
-      <!-- Dynamically filled by renderSingleCard() -->
+      <!-- Dynamically rendered by renderSingleCard() -->
     </div>
 
-    <!-- PRINT ALL CONTAINER (Hidden on screen, populated when Print All is clicked) -->
+    <!-- PRINT ALL CONTAINER (Populated when Print All is triggered) -->
     <div id="printAllContainer" class="hidden"></div>
 
   </main>
 
   <!-- MODAL: PREFERENCE CARD SUPPLY ROSTER -->
   <div id="prefCardModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 flex items-center justify-center p-4 hidden no-print">
-    <div class="bg-white rounded-2xl shadow-2xl max-w-3xl w-full max-h-[85vh] flex flex-col border border-slate-200">
+    <div class="bg-white rounded-2xl shadow-2xl max-w-4xl w-full max-h-[85vh] flex flex-col border border-slate-200">
       <div class="p-4 sm:p-5 border-b border-slate-200 flex justify-between items-center bg-slate-50 rounded-t-2xl">
         <div>
           <div class="flex items-center space-x-2">
             <span id="modalCardNumber" class="text-xs font-bold uppercase bg-teal-800 text-white px-2.5 py-0.5 rounded-md">M-75978</span>
             <h3 id="modalCardTitle" class="text-sm sm:text-base font-bold text-slate-900">Preference Card Supplies</h3>
           </div>
-          <p class="text-[11px] text-slate-500 mt-0.5">Warehouse pull ticket, equipment & sterile instruments from preference_cards.csv</p>
+          <p class="text-[11px] text-slate-500 mt-0.5">Supplies, drugs, equipment & instruments from supplies_catalog.csv</p>
         </div>
         <button onclick="closePrefCardModal()" class="text-slate-400 hover:text-slate-700 p-1.5 rounded-lg">
           <i data-lucide="x" class="w-5 h-5"></i>
@@ -223,11 +223,11 @@
     // ========================================================
     // CONFIGURATION & STATE
     // ========================================================
-    // The passcode is checked against this string:
     const APP_PASSCODE = "HBR2026";
 
     let binderCases = [];
-    let prefCardItems = [];
+    let preferenceCardsList = [];
+    let suppliesCatalog = [];
     let currentCaseId = "";
 
     // INITIALIZATION
@@ -268,37 +268,52 @@
     }
 
     // ========================================================
-    // CSV DATA LOADING
+    // CSV DATA LOADING & NATURAL ORDERING
     // ========================================================
     async function loadCSVData() {
       const alertBox = document.getElementById("statusAlert");
       const alertText = document.getElementById("statusAlertText");
 
       try {
-        // Fetch binder_cases.csv
+        // 1. Fetch binder_cases.csv
         const binderResp = await fetch("binder_cases.csv");
         if (!binderResp.ok) throw new Error("Could not find 'binder_cases.csv'");
         const binderCsvText = await binderResp.text();
         const parsedBinder = Papa.parse(binderCsvText, { header: true, skipEmptyLines: true });
-        binderCases = parsedBinder.data;
+        binderCases = sortBinderCases(parsedBinder.data);
 
-        // Fetch preference_cards.csv
+        // 2. Fetch preference_cards_list.csv
         try {
-          const prefResp = await fetch("preference_cards.csv");
-          if (prefResp.ok) {
-            const prefCsvText = await prefResp.text();
-            const parsedPref = Papa.parse(prefCsvText, { header: true, skipEmptyLines: true });
-            prefCardItems = parsedPref.data;
+          const cardsResp = await fetch("preference_cards_list.csv");
+          if (cardsResp.ok) {
+            const cardsCsvText = await cardsResp.text();
+            const parsedCards = Papa.parse(cardsCsvText, { header: true, skipEmptyLines: true });
+            preferenceCardsList = parsedCards.data;
           }
         } catch (e) {
-          console.warn("Preference cards CSV optional load error:", e);
+          console.warn("preference_cards_list.csv load note:", e);
+        }
+
+        // 3. Fetch supplies_catalog.csv
+        try {
+          const suppliesResp = await fetch("supplies_catalog.csv");
+          if (suppliesResp.ok) {
+            const suppliesCsvText = await suppliesResp.text();
+            const parsedSupplies = Papa.parse(suppliesCsvText, { header: true, skipEmptyLines: true });
+            suppliesCatalog = parsedSupplies.data;
+          }
+        } catch (e) {
+          console.warn("supplies_catalog.csv load note:", e);
         }
 
         populateDropdown();
 
-        // Check if there is a hash link (e.g. #TG1)
-        const hash = window.location.hash.replace("#", "").trim();
-        const matchingCase = binderCases.find(c => (c.Case_ID && c.Case_ID.toLowerCase() === hash.toLowerCase()) || (c.Case_Code && c.Case_Code.toLowerCase() === hash.toLowerCase()));
+        // Check for URL hash deep-link (e.g. #R1, #TG1)
+        const hash = window.location.hash.replace("#", "").trim().toLowerCase();
+        const matchingCase = binderCases.find(c => 
+          (c.Case_ID && c.Case_ID.toLowerCase() === hash) || 
+          (c.Case_Code && c.Case_Code.toLowerCase() === hash)
+        );
 
         if (matchingCase) {
           currentCaseId = matchingCase.Case_ID;
@@ -312,35 +327,95 @@
 
       } catch (err) {
         console.error(err);
-        alertText.innerText = "Error loading CSV files: " + err.message + ". Make sure 'binder_cases.csv' is in the same folder.";
+        alertText.innerText = "Error loading CSV files: " + err.message + ". Ensure 'binder_cases.csv' is in the same folder.";
         alertBox.classList.remove("hidden");
         lucide.createIcons();
       }
+    }
+
+    // ROBUST NATURAL SORT FOR BINDER CODES (QR, R1..R17, TG1..TG7, G1..G5)
+    function sortBinderCases(cases) {
+      const catOrder = {
+        "Quick Reference": 0,
+        "Reconstructive Urology (R)": 1,
+        "Gender Affirming (TG / Phallo)": 2,
+        "Endourology & General (G)": 3
+      };
+
+      return [...cases].sort((a, b) => {
+        const catA = a.Category || "Other";
+        const catB = b.Category || "Other";
+        const wA = catOrder[catA] !== undefined ? catOrder[catA] : 9;
+        const wB = catOrder[catB] !== undefined ? catOrder[catB] : 9;
+
+        if (wA !== wB) return wA - wB;
+
+        // Sorting within Quick Reference
+        if (catA === "Quick Reference") {
+          const qrOrder = { "QR": 0, "QR-SPT": 1, "QR-BUCCAL": 2, "QR-GRACILIS": 3 };
+          return (qrOrder[a.Case_Code] || 9) - (qrOrder[b.Case_Code] || 9);
+        }
+
+        // Sorting within Gender Affirming (TG first, then Phalloplasty P)
+        if (catA === "Gender Affirming (TG / Phallo)") {
+          const isTGA = (a.Case_Code || "").startsWith("TG");
+          const isTGB = (b.Case_Code || "").startsWith("TG");
+          if (isTGA && !isTGB) return -1;
+          if (!isTGA && isTGB) return 1;
+        }
+
+        // Numerical natural extraction (e.g. R1 vs R2 vs R10)
+        const numA = parseInt((a.Case_Code || "").replace(/\D/g, "")) || 0;
+        const numB = parseInt((b.Case_Code || "").replace(/\D/g, "")) || 0;
+        if (numA !== numB) return numA - numB;
+
+        return (a.Case_Code || "").localeCompare(b.Case_Code || "");
+      });
     }
 
     // POPULATE DROPDOWN
     function populateDropdown() {
       const select = document.getElementById("procedureSelect");
       if (!binderCases || binderCases.length === 0) {
-        select.innerHTML = `<option value="">No cases found in binder_cases.csv</option>`;
+        select.innerHTML = `<option value="">No cases found</option>`;
         return;
       }
 
-      // Group cases by Category
+      // Group cases by Category in ordered fashion
+      const orderedCategories = [
+        "Quick Reference",
+        "Reconstructive Urology (R)",
+        "Gender Affirming (TG / Phallo)",
+        "Endourology & General (G)"
+      ];
+
       const groups = {};
       binderCases.forEach(c => {
-        const cat = c.Category || "Other Procedures";
+        const cat = c.Category || "Other";
         if (!groups[cat]) groups[cat] = [];
         groups[cat].push(c);
       });
 
       let optionsHtml = "";
+      orderedCategories.forEach(cat => {
+        if (groups[cat] && groups[cat].length > 0) {
+          optionsHtml += `<optgroup label="── ${cat.toUpperCase()} ──">`;
+          groups[cat].forEach(c => {
+            optionsHtml += `<option value="${c.Case_ID}">[${c.Case_Code || c.Case_ID}] ${c.Case_Name}</option>`;
+          });
+          optionsHtml += `</optgroup>`;
+        }
+      });
+
+      // Any remaining categories
       for (const cat in groups) {
-        optionsHtml += `<optgroup label="${cat}">`;
-        groups[cat].forEach(c => {
-          optionsHtml += `<option value="${c.Case_ID}">[${c.Case_Code || c.Case_ID}] ${c.Case_Name}</option>`;
-        });
-        optionsHtml += `</optgroup>`;
+        if (!orderedCategories.includes(cat)) {
+          optionsHtml += `<optgroup label="── ${cat.toUpperCase()} ──">`;
+          groups[cat].forEach(c => {
+            optionsHtml += `<option value="${c.Case_ID}">[${c.Case_Code || c.Case_ID}] ${c.Case_Name}</option>`;
+          });
+          optionsHtml += `</optgroup>`;
+        }
       }
 
       select.innerHTML = optionsHtml;
@@ -353,7 +428,7 @@
     }
 
     // ========================================================
-    // CARD RENDERING LOGIC (Optimized for iPhone & Desktop)
+    // CARD RENDERING (Optimized for iPhone, Workstation & Print)
     // ========================================================
     function renderSingleCard(caseId) {
       const c = binderCases.find(x => x.Case_ID === caseId) || binderCases[0];
@@ -364,7 +439,7 @@
       // Generate linked card buttons
       const prefCardList = (c.Linked_Pref_Cards || "").split(",").map(s => s.trim()).filter(Boolean);
       const prefCardBadges = prefCardList.map(p => `
-        <button onclick="openPrefCardModal('${p}')" class="px-2.5 py-1 rounded-lg text-xs font-bold bg-teal-100 text-teal-900 hover:bg-teal-200 border border-teal-300 flex items-center space-x-1 transition">
+        <button onclick="openPrefCardModal('${p}')" class="px-2 py-0.5 rounded-lg text-xs font-bold bg-teal-100 text-teal-900 hover:bg-teal-200 border border-teal-300 flex items-center space-x-1 transition">
           <i data-lucide="clipboard-list" class="w-3.5 h-3.5"></i>
           <span>Card: ${p}</span>
         </button>
@@ -390,16 +465,16 @@
               </div>
             </div>
 
-            <!-- QR Code on card -->
+            <!-- Scannable QR Code on Card Header -->
             <div class="self-end md:self-center flex items-center space-x-3">
-              <div onclick="openQRModal('${c.Case_ID}', '${c.Case_Name}')" class="bg-white p-1.5 rounded-xl cursor-pointer hover:shadow-md transition flex flex-col items-center shrink-0" title="Scan to open on phone">
+              <div onclick="openQRModal('${c.Case_ID}', '${c.Case_Name}')" class="bg-white p-1.5 rounded-xl cursor-pointer hover:shadow-md transition flex flex-col items-center shrink-0" title="Scan to open directly on phone">
                 <div id="cardQrCode_${c.Case_ID}" class="w-14 h-14 flex items-center justify-center"></div>
                 <span class="text-[9px] font-bold text-slate-800 tracking-tight mt-0.5">PHONE SCAN</span>
               </div>
             </div>
           </div>
 
-          <!-- Content Grid: 3-column on desktop/print, 1-column on phone -->
+          <!-- Content Grid: 3-column on desktop/print, single column on phone -->
           <div class="p-4 sm:p-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 print-grid">
             
             <!-- Pre-Incision Critical Steps -->
@@ -443,7 +518,7 @@
             <div class="p-3.5 sm:p-4 rounded-xl border border-emerald-300 bg-emerald-100/40 print-box">
               <h3 class="text-xs font-bold uppercase tracking-wider text-emerald-950 flex items-center space-x-1.5 mb-2">
                 <i data-lucide="layout-grid" class="w-4 h-4 text-emerald-800"></i>
-                <span>Mayo #2 / Bolster / Mold Stand</span>
+                <span>Mayo #2 / Bolster Stand</span>
               </h3>
               <div class="text-xs text-slate-900 leading-relaxed">${formatBulletList(c.Mayo_2_Setup)}</div>
             </div>
@@ -467,7 +542,7 @@
               <div class="text-xs text-slate-800 leading-relaxed">${formatBadgedSupplies(c.Disposables_Sutures)}</div>
             </div>
 
-            <!-- Dressing, Meds & Recovery -->
+            <!-- Dressing, Meds & Bolster -->
             <div class="p-3.5 sm:p-4 rounded-xl border border-slate-200 bg-slate-50 print-box">
               <h3 class="text-xs font-bold uppercase tracking-wider text-slate-800 flex items-center space-x-1.5 mb-2">
                 <i data-lucide="bandage" class="w-4 h-4 text-teal-700"></i>
@@ -482,7 +557,7 @@
 
       lucide.createIcons();
 
-      // Render QR code
+      // Render QR code in header
       const qrEl = document.getElementById("cardQrCode_" + c.Case_ID);
       if (qrEl) {
         qrEl.innerHTML = "";
@@ -529,7 +604,6 @@
     // PRINT FUNCTIONS
     // ========================================================
     function printCurrentCard() {
-      // Ensure only the active card prints
       document.getElementById("printAllContainer").classList.add("hidden");
       document.getElementById("singleCardWrapper").classList.remove("hidden");
       window.print();
@@ -546,45 +620,45 @@
             <div class="print-header p-3 flex justify-between items-center text-white mb-3">
               <div>
                 <span class="font-extrabold uppercase text-xs tracking-wider bg-teal-700 px-2 py-0.5 rounded mr-2">${c.Case_Code || c.Case_ID}</span>
-                <span class="text-lg font-bold">${c.Case_Name}</span>
-                <span class="text-xs text-slate-300 ml-3">Surgeon: Dr. Figler (216-339-0230) | Cards: ${prefCardList.join(", ") || "None"}</span>
+                <span class="text-base font-bold">${c.Case_Name}</span>
+                <span class="text-xs text-slate-300 ml-3">Dr. Figler (216-339-0230) | Cards: ${prefCardList.join(", ") || "None"}</span>
               </div>
               <div class="text-xs font-semibold">Updated: ${c.Date_Updated || 'Recent'}</div>
             </div>
 
             <div class="print-grid">
               <div class="print-box">
-                <h4 class="font-bold uppercase text-[10pt] text-red-900 border-b pb-1 mb-1">Pre-Incision Critical Steps</h4>
-                <div class="text-[9pt] leading-tight">${formatBulletList(c.Pre_Incision_Critical_Steps)}</div>
+                <h4 class="font-bold uppercase text-[9pt] text-red-900 border-b pb-1 mb-1">Pre-Incision Critical Steps</h4>
+                <div class="text-[8.5pt] leading-tight">${formatBulletList(c.Pre_Incision_Critical_Steps)}</div>
               </div>
               <div class="print-box">
-                <h4 class="font-bold uppercase text-[10pt] text-slate-800 border-b pb-1 mb-1">Bed / Position / Drapes</h4>
-                <div class="text-[9pt] leading-tight">${formatBulletList(c.Bed_Position_Drapes)}</div>
+                <h4 class="font-bold uppercase text-[9pt] text-slate-800 border-b pb-1 mb-1">Bed / Position / Drapes</h4>
+                <div class="text-[8.5pt] leading-tight">${formatBulletList(c.Bed_Position_Drapes)}</div>
               </div>
               <div class="print-box">
-                <h4 class="font-bold uppercase text-[10pt] text-slate-800 border-b pb-1 mb-1">Trays & Equipment</h4>
-                <div class="text-[9pt] leading-tight">${formatBulletList(c.Trays_Equipment)}</div>
+                <h4 class="font-bold uppercase text-[9pt] text-slate-800 border-b pb-1 mb-1">Trays & Equipment</h4>
+                <div class="text-[8.5pt] leading-tight">${formatBulletList(c.Trays_Equipment)}</div>
               </div>
               <div class="print-box">
-                <h4 class="font-bold uppercase text-[10pt] text-emerald-900 border-b pb-1 mb-1">Mayo Stand #1 Setup</h4>
-                <div class="text-[9pt] leading-tight">${formatBulletList(c.Mayo_1_Setup)}</div>
+                <h4 class="font-bold uppercase text-[9pt] text-emerald-900 border-b pb-1 mb-1">Mayo Stand #1 Setup</h4>
+                <div class="text-[8.5pt] leading-tight">${formatBulletList(c.Mayo_1_Setup)}</div>
               </div>
               ${(c.Mayo_2_Setup && c.Mayo_2_Setup.toLowerCase() !== "none" && c.Mayo_2_Setup.trim() !== "") ? `
               <div class="print-box">
-                <h4 class="font-bold uppercase text-[10pt] text-emerald-950 border-b pb-1 mb-1">Mayo #2 / Bolster Stand</h4>
-                <div class="text-[9pt] leading-tight">${formatBulletList(c.Mayo_2_Setup)}</div>
+                <h4 class="font-bold uppercase text-[9pt] text-emerald-950 border-b pb-1 mb-1">Mayo #2 / Bolster Stand</h4>
+                <div class="text-[8.5pt] leading-tight">${formatBulletList(c.Mayo_2_Setup)}</div>
               </div>` : ''}
               <div class="print-box">
-                <h4 class="font-bold uppercase text-[10pt] text-slate-800 border-b pb-1 mb-1">Circulator & Settings</h4>
-                <div class="text-[9pt] leading-tight">${formatBulletList(c.Circulator_Energy_Notes)}</div>
+                <h4 class="font-bold uppercase text-[9pt] text-slate-800 border-b pb-1 mb-1">Circulator & Settings</h4>
+                <div class="text-[8.5pt] leading-tight">${formatBulletList(c.Circulator_Energy_Notes)}</div>
               </div>
               <div class="print-box col-span-2">
-                <h4 class="font-bold uppercase text-[10pt] text-teal-900 border-b pb-1 mb-1">Disposables & Sutures (Open vs. HA)</h4>
-                <div class="text-[8.5pt] leading-tight">${formatBadgedSupplies(c.Disposables_Sutures)}</div>
+                <h4 class="font-bold uppercase text-[9pt] text-teal-900 border-b pb-1 mb-1">Disposables & Sutures (Open vs. HA)</h4>
+                <div class="text-[8pt] leading-tight">${formatBadgedSupplies(c.Disposables_Sutures)}</div>
               </div>
               <div class="print-box">
-                <h4 class="font-bold uppercase text-[10pt] text-slate-800 border-b pb-1 mb-1">Dressing, Bolster & Meds</h4>
-                <div class="text-[9pt] leading-tight">${formatBulletList(c.Dressing_Meds_Bolster)}</div>
+                <h4 class="font-bold uppercase text-[9pt] text-slate-800 border-b pb-1 mb-1">Dressing, Bolster & Meds</h4>
+                <div class="text-[8.5pt] leading-tight">${formatBulletList(c.Dressing_Meds_Bolster)}</div>
               </div>
             </div>
           </div>
@@ -592,12 +666,10 @@
         container.innerHTML += cardHtml;
       });
 
-      // Show print all container and trigger window print
       document.getElementById("singleCardWrapper").classList.add("hidden");
       container.classList.remove("hidden");
       window.print();
 
-      // Restore view after print dialogue closes
       setTimeout(() => {
         container.classList.add("hidden");
         document.getElementById("singleCardWrapper").classList.remove("hidden");
@@ -605,22 +677,28 @@
     }
 
     // ========================================================
-    // MODAL: PREFERENCE CARD SUPPLY VIEWER
+    // PREFERENCE CARD SUPPLY MODAL (From supplies_catalog.csv)
     // ========================================================
     function openPrefCardModal(cardNumber) {
       document.getElementById("modalCardNumber").innerText = cardNumber;
       
-      const items = prefCardItems.filter(x => x.Card_Number && x.Card_Number.trim().toUpperCase() === cardNumber.trim().toUpperCase());
-      const content = document.getElementById("modalCardContent");
+      // Look up card name in preferenceCardsList
+      const cardMeta = preferenceCardsList.find(x => x.Card_Number && x.Card_Number.trim().toUpperCase() === cardNumber.trim().toUpperCase());
       const title = document.getElementById("modalCardTitle");
+      title.innerText = cardMeta ? cardMeta.Card_Name : ("Preference Card " + cardNumber);
+
+      // Find supplies associated with this card number
+      const cleanTarget = cardNumber.trim().toUpperCase();
+      const items = suppliesCatalog.filter(x => {
+        const cards = (x.Associated_Preference_Cards || "").split(",").map(c => c.trim().toUpperCase());
+        return cards.includes(cleanTarget);
+      });
+
+      const content = document.getElementById("modalCardContent");
 
       if (items.length === 0) {
-        title.innerText = "Preference Card " + cardNumber;
-        content.innerHTML = `<div class="text-center py-8 text-xs text-slate-500">No items found for card ${cardNumber} in preference_cards.csv.</div>`;
+        content.innerHTML = `<div class="text-center py-8 text-xs text-slate-500">No supply items linked to card ${cardNumber} in supplies_catalog.csv.</div>`;
       } else {
-        title.innerText = items[0].Card_Name || ("Card " + cardNumber);
-        
-        // Group by category
         const supplies = items.filter(x => (x.Category || '').toLowerCase().includes('supply') || (x.Category || '').toLowerCase().includes('disposable'));
         const drugs = items.filter(x => (x.Category || '').toLowerCase().includes('drug') || (x.Category || '').toLowerCase().includes('medication'));
         const instruments = items.filter(x => (x.Category || '').toLowerCase().includes('instrument') || (x.Category || '').toLowerCase().includes('tray'));
@@ -632,25 +710,27 @@
             <div>
               <h4 class="font-bold uppercase tracking-wider text-slate-700 mb-2 flex items-center space-x-1.5">
                 <i data-lucide="package" class="w-4 h-4 text-teal-700"></i>
-                <span>Supplies & Pick Ticket Inventory (${supplies.length})</span>
+                <span>Supplies & Disposables (${supplies.length})</span>
               </h4>
               <div class="border rounded-xl overflow-hidden">
                 <table class="w-full text-left border-collapse">
                   <thead class="bg-slate-50 border-b border-slate-200 text-slate-600 font-bold uppercase text-[10px]">
                     <tr>
-                      <th class="py-2 px-3">Pull / Open / PRN</th>
                       <th class="py-2 px-3">Description</th>
+                      <th class="py-2 px-3">Item #</th>
                       <th class="py-2 px-3">Lawson #</th>
+                      <th class="py-2 px-3">Unit</th>
                       <th class="py-2 px-3">Bin Location</th>
                     </tr>
                   </thead>
                   <tbody class="divide-y divide-slate-100 text-slate-800">
                     ${supplies.map(s => `
                       <tr class="hover:bg-slate-50">
-                        <td class="py-1.5 px-3 font-mono font-bold text-teal-800">${s.Pull_Qty || 1} / ${s.Open_Qty || 0} / ${s.PRN_Qty || 0}</td>
                         <td class="py-1.5 px-3 font-medium">${s.Item_Name}</td>
+                        <td class="py-1.5 px-3 font-mono text-slate-600 font-bold">${s.Item_Number || '-'}</td>
                         <td class="py-1.5 px-3 font-mono text-slate-500">${s.Lawson_Number || '-'}</td>
-                        <td class="py-1.5 px-3 text-slate-500">${s.Bin_Location || 'Warehouse'}</td>
+                        <td class="py-1.5 px-3 font-mono text-slate-500">${s.Unit || 'EA'}</td>
+                        <td class="py-1.5 px-3 text-slate-500">${s.Bin_Locations || 'Warehouse'}</td>
                       </tr>
                     `).join("")}
                   </tbody>
@@ -666,7 +746,7 @@
                   <span>Instrument Trays</span>
                 </h4>
                 <ul class="space-y-1 text-slate-700">
-                  ${instruments.map(i => `<li class="flex items-center justify-between border-b border-slate-200/60 pb-0.5"><span>• ${i.Item_Name}</span><span class="text-[10px] font-bold text-teal-800">${i.Notes || 'Required'}</span></li>`).join("")}
+                  ${instruments.map(i => `<li class="flex items-center justify-between border-b border-slate-200/60 pb-0.5"><span>• ${i.Item_Name}</span><span class="text-[10px] font-mono text-slate-500">${i.Item_Number || ''}</span></li>`).join("")}
                 </ul>
               </div>` : ''}
 
@@ -677,7 +757,7 @@
                   <span>Medications & Solutions</span>
                 </h4>
                 <ul class="space-y-1 text-slate-700">
-                  ${drugs.map(d => `<li class="flex items-center justify-between border-b border-slate-200/60 pb-0.5"><span>• ${d.Item_Name}</span><span class="text-[10px] font-bold text-slate-500">Open: ${d.Open_Qty}</span></li>`).join("")}
+                  ${drugs.map(d => `<li class="border-b border-slate-200/60 pb-0.5">• ${d.Item_Name}</li>`).join("")}
                 </ul>
               </div>` : ''}
             </div>
