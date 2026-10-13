@@ -81,7 +81,7 @@
 </head>
 <body class="bg-slate-100 text-slate-900 min-h-screen flex flex-col font-sans selection:bg-teal-200">
 
-  <!-- PASSWORD SCREEN (Passcode hidden from markup) -->
+  <!-- PASSWORD SCREEN -->
   <div id="authScreen" class="fixed inset-0 bg-slate-950 z-50 flex items-center justify-center p-4">
     <div class="bg-white rounded-2xl shadow-2xl max-w-sm w-full p-7 border border-slate-200 text-center">
       <div class="w-14 h-14 bg-teal-50 text-teal-700 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-xs">
@@ -90,7 +90,7 @@
       <h1 class="text-xl font-black text-slate-900 tracking-tight">OR Clinical Binder</h1>
       <p class="text-xs text-slate-500 font-medium mt-1 mb-6">Dr. Brad Figler | Reconstructive Urology</p>
 
-      <form onsubmit="handleAuthSubmit(event)">
+      <form id="authForm" onsubmit="handleAuthSubmit(event)">
         <div class="mb-4 text-left">
           <label class="block text-[11px] font-bold uppercase tracking-wider text-slate-600 mb-1.5">Enter Passcode</label>
           <input type="password" id="passInput" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-teal-600 focus:outline-none text-slate-900 font-medium" placeholder="••••••••" required autofocus />
@@ -204,7 +204,8 @@
   </div>
 
   <script>
-    const APP_PASSCODE = "HBR2026";
+    // Accepts either HBR2026 or hbr1, case-insensitive
+    const VALID_PASSCODES = ["hbr2026", "hbr1"];
 
     let binderCases = [];
     let preferenceCards = [];
@@ -218,32 +219,41 @@
     let cardDisposables = [];
     let currentCaseId = "";
 
-    window.addEventListener("DOMContentLoaded", () => {
+    window.addEventListener("DOMContentLoaded", function() {
       checkAuthStatus();
     });
 
     function checkAuthStatus() {
       const auth = localStorage.getItem("figler_binder_auth");
+      const authScreen = document.getElementById("authScreen");
       if (auth === "true") {
-        document.getElementById("authScreen").classList.add("hidden");
+        if (authScreen) authScreen.style.display = "none";
         loadRelationalDatabase();
       } else {
-        document.getElementById("authScreen").classList.remove("hidden");
+        if (authScreen) authScreen.style.display = "flex";
         lucide.createIcons();
       }
     }
 
     function handleAuthSubmit(e) {
-      e.preventDefault();
-      const entered = document.getElementById("passInput").value.trim();
-      if (entered === APP_PASSCODE) {
+      if (e) e.preventDefault();
+      const input = document.getElementById("passInput");
+      const entered = input ? input.value.trim().toLowerCase() : "";
+      const err = document.getElementById("passError");
+      const authScreen = document.getElementById("authScreen");
+
+      if (VALID_PASSCODES.includes(entered)) {
         localStorage.setItem("figler_binder_auth", "true");
-        document.getElementById("authScreen").classList.add("hidden");
-        document.getElementById("passError").classList.add("hidden");
+        if (authScreen) authScreen.style.display = "none";
+        if (err) err.style.display = "none";
         loadRelationalDatabase();
       } else {
-        document.getElementById("passError").classList.remove("hidden");
+        if (err) {
+          err.classList.remove("hidden");
+          err.style.display = "block";
+        }
       }
+      return false;
     }
 
     function lockApp() {
@@ -270,17 +280,17 @@
         
         try {
           const packs = await fetchCSV("packs_catalog.csv");
-          packs.forEach(p => { packsCatalog[p.Pack_ID] = p; });
+          packs.forEach(function(p) { packsCatalog[p.Pack_ID] = p; });
         } catch(e){}
 
         try {
           const trays = await fetchCSV("trays_catalog.csv");
-          trays.forEach(t => { traysCatalog[t.Tray_ID] = t; });
+          trays.forEach(function(t) { traysCatalog[t.Tray_ID] = t; });
         } catch(e){}
 
         try {
           const disps = await fetchCSV("disposables_catalog.csv");
-          disps.forEach(d => { disposablesCatalog[d.Item_ID] = d; });
+          disps.forEach(function(d) { disposablesCatalog[d.Item_ID] = d; });
         } catch(e){}
 
         try { caseCards = await fetchCSV("case_cards.csv"); } catch(e){}
@@ -292,20 +302,20 @@
         populateDropdown();
 
         const hash = window.location.hash.replace("#", "").trim().toLowerCase();
-        const matchingCase = binderCases.find(c => 
-          (c.Case_ID && c.Case_ID.toLowerCase() === hash) || 
-          (c.Case_Code && c.Case_Code.toLowerCase() === hash)
-        );
+        const matchingCase = binderCases.find(function(c) {
+          return (c.Case_ID && c.Case_ID.toLowerCase() === hash) || 
+                 (c.Case_Code && c.Case_Code.toLowerCase() === hash);
+        });
 
         currentCaseId = matchingCase ? matchingCase.Case_ID : (binderCases[0] ? binderCases[0].Case_ID : "");
         document.getElementById("procedureSelect").value = currentCaseId;
         renderSingleCard(currentCaseId);
-        alertBox.classList.add("hidden");
+        if (alertBox) alertBox.classList.add("hidden");
 
       } catch (err) {
         console.error(err);
-        alertText.innerText = "Error loading database: " + err.message + ". Verify that all CSV files are uploaded to binder/.";
-        alertBox.classList.remove("hidden");
+        if (alertText) alertText.innerText = "Error loading database: " + err.message + ". Verify all CSV files are uploaded to binder/.";
+        if (alertBox) alertBox.classList.remove("hidden");
         lucide.createIcons();
       }
     }
@@ -318,7 +328,7 @@
         "Endourology & General (G)": 3
       };
 
-      return [...cases].sort((a, b) => {
+      return cases.slice().sort(function(a, b) {
         const catA = a.Category || "Other";
         const catB = b.Category || "Other";
         const wA = catOrder[catA] !== undefined ? catOrder[catA] : 9;
@@ -349,7 +359,7 @@
     function populateDropdown() {
       const select = document.getElementById("procedureSelect");
       if (!binderCases || binderCases.length === 0) {
-        select.innerHTML = `<option value="">No cases loaded</option>`;
+        select.innerHTML = '<option value="">No cases loaded</option>';
         return;
       }
 
@@ -361,20 +371,20 @@
       ];
 
       const groups = {};
-      binderCases.forEach(c => {
+      binderCases.forEach(function(c) {
         const cat = c.Category || "Other";
         if (!groups[cat]) groups[cat] = [];
         groups[cat].push(c);
       });
 
       let optionsHtml = "";
-      orderedCategories.forEach(cat => {
+      orderedCategories.forEach(function(cat) {
         if (groups[cat] && groups[cat].length > 0) {
-          optionsHtml += `<optgroup label="── ${cat.toUpperCase()} ──">`;
-          groups[cat].forEach(c => {
-            optionsHtml += `<option value="${c.Case_ID}">[${c.Case_Code || c.Case_ID}] ${c.Case_Name}</option>`;
+          optionsHtml += '<optgroup label="── ' + cat.toUpperCase() + ' ──">';
+          groups[cat].forEach(function(c) {
+            optionsHtml += '<option value="' + c.Case_ID + '">[' + (c.Case_Code || c.Case_ID) + '] ' + c.Case_Name + '</option>';
           });
-          optionsHtml += `</optgroup>`;
+          optionsHtml += '</optgroup>';
         }
       });
 
@@ -388,176 +398,166 @@
     }
 
     function renderSingleCard(caseId) {
-      const c = binderCases.find(x => x.Case_ID === caseId) || binderCases[0];
+      const c = binderCases.find(function(x) { return x.Case_ID === caseId; }) || binderCases[0];
       if (!c) return;
 
       const container = document.getElementById("singleCardWrapper");
 
-      // Join preference cards
-      const linkedCards = caseCards.filter(cc => cc.Case_ID === c.Case_ID).map(cc => cc.Card_Number);
-      const prefCardBadges = linkedCards.map(p => `
-        <button onclick="openPrefCardModal('${p}')" class="px-2 py-0.5 rounded-lg text-xs font-bold bg-teal-100 text-teal-900 hover:bg-teal-200 border border-teal-300 flex items-center space-x-1 transition">
-          <i data-lucide="clipboard-list" class="w-3.5 h-3.5"></i>
-          <span>Card: ${p}</span>
-        </button>
-      `).join(" ");
+      const linkedCards = caseCards.filter(function(cc) { return cc.Case_ID === c.Case_ID; }).map(function(cc) { return cc.Card_Number; });
+      const prefCardBadges = linkedCards.map(function(p) {
+        return '<button onclick="openPrefCardModal('' + p + '')" class="px-2 py-0.5 rounded-lg text-xs font-bold bg-teal-100 text-teal-900 hover:bg-teal-200 border border-teal-300 flex items-center space-x-1 transition">' +
+               '  <i data-lucide="clipboard-list" class="w-3.5 h-3.5"></i>' +
+               '  <span>Card: ' + p + '</span>' +
+               '</button>';
+      }).join(" ");
 
-      // Join Pack
       const packMeta = packsCatalog[c.Assigned_Pack_ID] || { Pack_Name: c.Assigned_Pack_ID, Lawson_Number: "" };
 
-      // Join Case Trays
-      const myTrays = caseTrays.filter(ct => ct.Case_ID === c.Case_ID).map(ct => {
-        return { ...ct, ...(traysCatalog[ct.Tray_ID] || { Tray_Name: ct.Tray_ID }) };
+      const myTrays = caseTrays.filter(function(ct) { return ct.Case_ID === c.Case_ID; }).map(function(ct) {
+        return Object.assign({}, ct, (traysCatalog[ct.Tray_ID] || { Tray_Name: ct.Tray_ID }));
       });
 
-      // Join Case Disposables
-      const myDisps = caseDisposables.filter(cd => cd.Case_ID === c.Case_ID).map(cd => {
-        return { ...cd, ...(disposablesCatalog[cd.Item_ID] || { Item_Name: cd.Item_ID }) };
+      const myDisps = caseDisposables.filter(function(cd) { return cd.Case_ID === c.Case_ID; }).map(function(cd) {
+        return Object.assign({}, cd, (disposablesCatalog[cd.Item_ID] || { Item_Name: cd.Item_ID }));
       });
 
-      const mayo1Disps = myDisps.filter(d => (d.Location || '').includes('Mayo 1'));
-      const mayo2Disps = myDisps.filter(d => (d.Location || '').includes('Mayo 2'));
-      const otherDisps = myDisps.filter(d => !(d.Location || '').includes('Mayo'));
+      const mayo1Disps = myDisps.filter(function(d) { return (d.Location || '').indexOf('Mayo 1') !== -1; });
+      const mayo2Disps = myDisps.filter(function(d) { return (d.Location || '').indexOf('Mayo 2') !== -1; });
+      const otherDisps = myDisps.filter(function(d) { return (d.Location || '').indexOf('Mayo') === -1; });
 
-      container.innerHTML = `
-        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden print-case-card">
-          
-          <div class="bg-slate-900 text-white p-4 sm:p-5 flex flex-col md:flex-row justify-between items-start md:items-center gap-3 print-header">
-            <div>
-              <div class="flex items-center space-x-2 mb-1">
-                <span class="px-2 py-0.5 rounded bg-teal-600 text-white text-[11px] font-extrabold uppercase tracking-wide">${c.Case_Code || c.Case_ID}</span>
-                <span class="text-xs text-slate-300 font-medium">${c.Category || 'Reconstruction'}</span>
-              </div>
-              <h2 class="text-xl sm:text-2xl font-black tracking-tight text-white">${c.Case_Name}</h2>
-              <div class="flex flex-wrap items-center gap-2 mt-2 text-xs text-slate-300">
-                <span>Updated: <b>${c.Date_Updated || 'Recent'}</b></span>
-                <span>•</span>
-                <span>Surgeon: <b>Dr. Figler</b> (Cell: 216-339-0230)</span>
-                <span>•</span>
-                <div class="inline-flex gap-1.5 no-print">${prefCardBadges || '<span class="text-slate-400 italic">No card linked</span>'}</div>
-              </div>
-            </div>
+      let mayo1ItemsHtml = '';
+      if (mayo1Disps.length > 0) {
+        mayo1ItemsHtml = '<div class="border-t border-emerald-200/60 pt-1.5 space-y-1">' +
+                         '  <div class="text-[10px] uppercase font-bold text-emerald-900">Mayo Items to Open:</div>' +
+                         mayo1Disps.map(function(d) { return '<div class="flex justify-between items-center text-xs"><span>• ' + d.Item_Name + '</span><span class="badge-open">' + (d.Quantity || 1) + ' OPEN</span></div>'; }).join('') +
+                         '</div>';
+      }
 
-            <div class="self-end md:self-center flex items-center space-x-3">
-              <div onclick="openQRModal('${c.Case_ID}', '${c.Case_Name}')" class="bg-white p-1.5 rounded-xl cursor-pointer hover:shadow-md transition flex flex-col items-center shrink-0" title="Scan to open on phone">
-                <div id="cardQrCode_${c.Case_ID}" class="w-14 h-14 flex items-center justify-center"></div>
-                <span class="text-[9px] font-bold text-slate-800 tracking-tight mt-0.5">PHONE SCAN</span>
-              </div>
-            </div>
-          </div>
+      let mayo2Block = '';
+      if (c.Mayo_2_Setup && c.Mayo_2_Setup.toLowerCase() !== "none" && c.Mayo_2_Setup.trim() !== "") {
+        let mayo2ItemsHtml = '';
+        if (mayo2Disps.length > 0) {
+          mayo2ItemsHtml = '<div class="border-t border-emerald-300/60 pt-1.5 space-y-1">' +
+                           '  <div class="text-[10px] uppercase font-bold text-emerald-950">Specialty Stand Items:</div>' +
+                           mayo2Disps.map(function(d) { return '<div class="flex justify-between items-center text-xs"><span>• ' + d.Item_Name + '</span><span class="badge-open">' + (d.Quantity || 1) + ' OPEN</span></div>'; }).join('') +
+                           '</div>';
+        }
+        mayo2Block = '<div class="p-3.5 sm:p-4 rounded-xl border border-emerald-300 bg-emerald-100/40 print-box">' +
+                     '  <h3 class="text-xs font-bold uppercase tracking-wider text-emerald-950 flex items-center space-x-1.5 mb-2">' +
+                     '    <i data-lucide="layout-grid" class="w-4 h-4 text-emerald-800"></i>' +
+                     '    <span>Mayo #2 / Bolster Stand</span>' +
+                     '  </h3>' +
+                     '  <div class="text-xs text-slate-900 leading-relaxed mb-2">' + formatBulletList(c.Mayo_2_Setup) + '</div>' +
+                     mayo2ItemsHtml +
+                     '</div>';
+      }
 
-          <div class="p-4 sm:p-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 print-grid">
-            
-            <!-- Pre-Incision -->
-            <div class="p-3.5 sm:p-4 rounded-xl border border-red-200 bg-red-50/40 print-box">
-              <h3 class="text-xs font-bold uppercase tracking-wider text-red-900 flex items-center space-x-1.5 mb-2">
-                <i data-lucide="alert-octagon" class="w-4 h-4 text-red-600"></i>
-                <span>Pre-Incision Critical Steps</span>
-              </h3>
-              <div class="text-xs text-slate-800 leading-relaxed">${formatBulletList(c.Pre_Incision_Critical_Steps)}</div>
-            </div>
+      const traysRows = myTrays.map(function(t) {
+        const statusClass = t.Status === 'Open' ? 'text-emerald-700 font-extrabold' : 'text-amber-700';
+        return '<div class="flex items-center justify-between text-xs py-0.5 border-b border-slate-200/60">' +
+               '  <span class="truncate pr-1">• ' + t.Tray_Name + '</span>' +
+               '  <span class="text-[10px] font-bold ' + statusClass + '">' + (t.Status || 'Required') + '</span>' +
+               '</div>';
+      }).join('');
 
-            <!-- Bed, Position & Drapes -->
-            <div class="p-3.5 sm:p-4 rounded-xl border border-slate-200 bg-slate-50 print-box">
-              <h3 class="text-xs font-bold uppercase tracking-wider text-slate-800 flex items-center space-x-1.5 mb-2">
-                <i data-lucide="bed" class="w-4 h-4 text-teal-700"></i>
-                <span>Bed / Position / Drapes</span>
-              </h3>
-              <div class="text-xs text-slate-800 leading-relaxed">${formatBulletList(c.Bed_Position_Drapes)}</div>
-            </div>
+      const dispsRows = otherDisps.map(function(d) {
+        const badgeClass = d.Status === 'Open' ? 'badge-open' : 'badge-ha';
+        return '<div class="flex items-center justify-between py-1 px-1.5 rounded bg-white border border-slate-100 shadow-2xs">' +
+               '  <span class="truncate pr-1">• ' + d.Item_Name + '</span>' +
+               '  <span class="' + badgeClass + ' shrink-0">' + (d.Quantity || 1) + ' ' + d.Status + '</span>' +
+               '</div>';
+      }).join('');
 
-            <!-- Assigned Pack & Sterile Trays (Relational) -->
-            <div class="p-3.5 sm:p-4 rounded-xl border border-teal-200 bg-teal-50/30 print-box">
-              <h3 class="text-xs font-bold uppercase tracking-wider text-teal-950 flex items-center space-x-1.5 mb-2">
-                <i data-lucide="layers" class="w-4 h-4 text-teal-700"></i>
-                <span>Assigned Pack & Trays</span>
-              </h3>
-              <div class="bg-white p-2 rounded-lg border border-teal-200 mb-2.5 shadow-2xs">
-                <div class="text-[10px] uppercase font-bold text-teal-800 tracking-wider">Required Base Pack:</div>
-                <div class="font-extrabold text-xs text-slate-900 flex justify-between items-center mt-0.5">
-                  <span>${packMeta.Pack_Name} Pack</span>
-                  <span class="text-[10px] font-mono text-slate-500 font-normal">#${packMeta.Lawson_Number || '-'}</span>
-                </div>
-              </div>
-              <div class="space-y-1">
-                <div class="text-[10px] uppercase font-bold text-slate-600 tracking-wider">Instrument Trays:</div>
-                ${myTrays.map(t => `
-                  <div class="flex items-center justify-between text-xs py-0.5 border-b border-slate-200/60">
-                    <span class="truncate pr-1">• ${t.Tray_Name}</span>
-                    <span class="text-[10px] font-bold ${t.Status === 'Open' ? 'text-emerald-700 font-extrabold' : 'text-amber-700'}">${t.Status || 'Required'}</span>
-                  </div>
-                `).join("")}
-              </div>
-            </div>
-
-            <!-- Mayo Stand #1 (Joined Disposables) -->
-            <div class="p-3.5 sm:p-4 rounded-xl border border-emerald-200 bg-emerald-50/40 print-box">
-              <h3 class="text-xs font-bold uppercase tracking-wider text-emerald-950 flex items-center space-x-1.5 mb-2">
-                <i data-lucide="layout-grid" class="w-4 h-4 text-emerald-700"></i>
-                <span>Mayo Stand #1 Setup</span>
-              </h3>
-              <div class="text-xs text-slate-800 leading-relaxed mb-2">${formatBulletList(c.Mayo_1_Setup)}</div>
-              ${mayo1Disps.length > 0 ? `
-                <div class="border-t border-emerald-200/60 pt-1.5 space-y-1">
-                  <div class="text-[10px] uppercase font-bold text-emerald-900">Mayo Items to Open:</div>
-                  ${mayo1Disps.map(d => `<div class="flex justify-between items-center text-xs"><span>• ${d.Item_Name}</span><span class="badge-open">${d.Quantity || 1} OPEN</span></div>`).join("")}
-                </div>
-              ` : ''}
-            </div>
-
-            <!-- Mayo Stand #2 / Specialty (if applicable) -->
-            ${(c.Mayo_2_Setup && c.Mayo_2_Setup.toLowerCase() !== "none" && c.Mayo_2_Setup.trim() !== "") ? `
-            <div class="p-3.5 sm:p-4 rounded-xl border border-emerald-300 bg-emerald-100/40 print-box">
-              <h3 class="text-xs font-bold uppercase tracking-wider text-emerald-950 flex items-center space-x-1.5 mb-2">
-                <i data-lucide="layout-grid" class="w-4 h-4 text-emerald-800"></i>
-                <span>Mayo #2 / Bolster Stand</span>
-              </h3>
-              <div class="text-xs text-slate-900 leading-relaxed mb-2">${formatBulletList(c.Mayo_2_Setup)}</div>${mayo2Disps.length > 0 ? `
-                <div class="border-t border-emerald-300/60 pt-1.5 space-y-1">
-                  <div class="text-[10px] uppercase font-bold text-emerald-950">Specialty Stand Items:</div>
-                  ${mayo2Disps.map(d => `<div class="flex justify-between items-center text-xs"><span>• ${d.Item_Name}</span><span class="badge-open">${d.Quantity || 1} OPEN</span></div>`).join("")}
-                </div>
-              ` : ''}
-            </div>
-            ` : ''}
-
-            <!-- Circulator & Settings -->
-            <div class="p-3.5 sm:p-4 rounded-xl border border-slate-200 bg-slate-50 print-box">
-              <h3 class="text-xs font-bold uppercase tracking-wider text-slate-800 flex items-center space-x-1.5 mb-2">
-                <i data-lucide="radio" class="w-4 h-4 text-teal-700"></i>
-                <span>Circulator & Energy Settings</span>
-              </h3>
-              <div class="text-xs text-slate-800 leading-relaxed">${formatBulletList(c.Circulator_Energy_Notes)}</div>
-            </div>
-
-            <!-- Disposables & Sutures (Relational Table Join) -->
-            <div class="p-3.5 sm:p-4 rounded-xl border border-teal-200 bg-teal-50/40 md:col-span-2 lg:col-span-2 print-box">
-              <h3 class="text-xs font-bold uppercase tracking-wider text-teal-950 flex items-center space-x-1.5 mb-2">
-                <i data-lucide="package-check" class="w-4 h-4 text-teal-700"></i>
-                <span>Additional Disposables & Sutures (Outside Pack)</span>
-              </h3>
-              <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
-                ${otherDisps.map(d => `
-                  <div class="flex items-center justify-between py-1 px-1.5 rounded bg-white border border-slate-100 shadow-2xs">
-                    <span class="truncate pr-1">• ${d.Item_Name}</span>
-                    <span class="${d.Status === 'Open' ? 'badge-open' : 'badge-ha'} shrink-0">${d.Quantity \vert{}\vert{} 1}${d.Status}</span>
-                  </div>
-                `).join("")}
-              </div>
-            </div>
-
-            <!-- Dressing, Meds & Bolster -->
-            <div class="p-3.5 sm:p-4 rounded-xl border border-slate-200 bg-slate-50 print-box">
-              <h3 class="text-xs font-bold uppercase tracking-wider text-slate-800 flex items-center space-x-1.5 mb-2">
-                <i data-lucide="bandage" class="w-4 h-4 text-teal-700"></i>
-                <span>Dressing, Bolster & Meds</span>
-              </h3>
-              <div class="text-xs text-slate-800 leading-relaxed">${formatBulletList(c.Dressing_Meds_Bolster)}</div>
-            </div>
-
-          </div>
-        </div>
-      `;
+      container.innerHTML = 
+        '<div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden print-case-card">' +
+        '  <div class="bg-slate-900 text-white p-4 sm:p-5 flex flex-col md:flex-row justify-between items-start md:items-center gap-3 print-header">' +
+        '    <div>' +
+        '      <div class="flex items-center space-x-2 mb-1">' +
+        '        <span class="px-2 py-0.5 rounded bg-teal-600 text-white text-[11px] font-extrabold uppercase tracking-wide">' + (c.Case_Code || c.Case_ID) + '</span>' +
+        '        <span class="text-xs text-slate-300 font-medium">' + (c.Category || 'Reconstruction') + '</span>' +
+        '      </div>' +
+        '      <h2 class="text-xl sm:text-2xl font-black tracking-tight text-white">' + c.Case_Name + '</h2>' +
+        '      <div class="flex flex-wrap items-center gap-2 mt-2 text-xs text-slate-300">' +
+        '        <span>Updated: <b>' + (c.Date_Updated || 'Recent') + '</b></span>' +
+        '        <span>•</span>' +
+        '        <span>Surgeon: <b>Dr. Figler</b> (Cell: 216-339-0230)</span>' +
+        '        <span>•</span>' +
+        '        <div class="inline-flex gap-1.5 no-print">' + (prefCardBadges || '<span class="text-slate-400 italic">No card linked</span>') + '</div>' +
+        '      </div>' +
+        '    </div>' +
+        '    <div class="self-end md:self-center flex items-center space-x-3">' +
+        '      <div onclick="openQRModal('' + c.Case_ID + '', '' + c.Case_Name.replace(/'/g, "\'") + '')" class="bg-white p-1.5 rounded-xl cursor-pointer hover:shadow-md transition flex flex-col items-center shrink-0" title="Scan to open on phone">' +
+        '        <div id="cardQrCode_' + c.Case_ID + '" class="w-14 h-14 flex items-center justify-center"></div>' +
+        '        <span class="text-[9px] font-bold text-slate-800 tracking-tight mt-0.5">PHONE SCAN</span>' +
+        '      </div>' +
+        '    </div>' +
+        '  </div>' +
+        '  <div class="p-4 sm:p-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 print-grid">' +
+        '    <div class="p-3.5 sm:p-4 rounded-xl border border-red-200 bg-red-50/40 print-box">' +
+        '      <h3 class="text-xs font-bold uppercase tracking-wider text-red-900 flex items-center space-x-1.5 mb-2">' +
+        '        <i data-lucide="alert-octagon" class="w-4 h-4 text-red-600"></i>' +
+        '        <span>Pre-Incision Critical Steps</span>' +
+        '      </h3>' +
+        '      <div class="text-xs text-slate-800 leading-relaxed">' + formatBulletList(c.Pre_Incision_Critical_Steps) + '</div>' +
+        '    </div>' +
+        '    <div class="p-3.5 sm:p-4 rounded-xl border border-slate-200 bg-slate-50 print-box">' +
+        '      <h3 class="text-xs font-bold uppercase tracking-wider text-slate-800 flex items-center space-x-1.5 mb-2">' +
+        '        <i data-lucide="bed" class="w-4 h-4 text-teal-700"></i>' +
+        '        <span>Bed / Position / Drapes</span>' +
+        '      </h3>' +
+        '      <div class="text-xs text-slate-800 leading-relaxed">' + formatBulletList(c.Bed_Position_Drapes) + '</div>' +
+        '    </div>' +
+        '    <div class="p-3.5 sm:p-4 rounded-xl border border-teal-200 bg-teal-50/30 print-box">' +
+        '      <h3 class="text-xs font-bold uppercase tracking-wider text-teal-950 flex items-center space-x-1.5 mb-2">' +
+        '        <i data-lucide="layers" class="w-4 h-4 text-teal-700"></i>' +
+        '        <span>Assigned Pack & Trays</span>' +
+        '      </h3>' +
+        '      <div class="bg-white p-2 rounded-lg border border-teal-200 mb-2.5 shadow-2xs">' +
+        '        <div class="text-[10px] uppercase font-bold text-teal-800 tracking-wider">Required Base Pack:</div>' +
+        '        <div class="font-extrabold text-xs text-slate-900 flex justify-between items-center mt-0.5">' +
+        '          <span>' + packMeta.Pack_Name + ' Pack</span>' +
+        '          <span class="text-[10px] font-mono text-slate-500 font-normal">#' + (packMeta.Lawson_Number || '-') + '</span>' +
+        '        </div>' +
+        '      </div>' +
+        '      <div class="space-y-1">' +
+        '        <div class="text-[10px] uppercase font-bold text-slate-600 tracking-wider">Instrument Trays:</div>' +
+        traysRows +
+        '      </div>' +
+        '    </div>' +
+        '    <div class="p-3.5 sm:p-4 rounded-xl border border-emerald-200 bg-emerald-50/40 print-box">' +
+        '      <h3 class="text-xs font-bold uppercase tracking-wider text-emerald-950 flex items-center space-x-1.5 mb-2">' +
+        '        <i data-lucide="layout-grid" class="w-4 h-4 text-emerald-700"></i>' +
+        '        <span>Mayo Stand #1 Setup</span>' +
+        '      </h3>' +
+        '      <div class="text-xs text-slate-800 leading-relaxed mb-2">' + formatBulletList(c.Mayo_1_Setup) + '</div>' +
+        mayo1ItemsHtml +
+        '    </div>' +
+        mayo2Block +
+        '    <div class="p-3.5 sm:p-4 rounded-xl border border-slate-200 bg-slate-50 print-box">' +
+        '      <h3 class="text-xs font-bold uppercase tracking-wider text-slate-800 flex items-center space-x-1.5 mb-2">' +
+        '        <i data-lucide="radio" class="w-4 h-4 text-teal-700"></i>' +
+        '        <span>Circulator & Energy Settings</span>' +
+        '      </h3>' +
+        '      <div class="text-xs text-slate-800 leading-relaxed">' + formatBulletList(c.Circulator_Energy_Notes) + '</div>' +
+        '    </div>' +
+        '    <div class="p-3.5 sm:p-4 rounded-xl border border-teal-200 bg-teal-50/40 md:col-span-2 lg:col-span-2 print-box">' +
+        '      <h3 class="text-xs font-bold uppercase tracking-wider text-teal-950 flex items-center space-x-1.5 mb-2">' +
+        '        <i data-lucide="package-check" class="w-4 h-4 text-teal-700"></i>' +
+        '        <span>Additional Disposables & Sutures (Outside Pack)</span>' +
+        '      </h3>' +
+        '      <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">' +
+        dispsRows +
+        '      </div>' +
+        '    </div>' +
+        '    <div class="p-3.5 sm:p-4 rounded-xl border border-slate-200 bg-slate-50 print-box">' +
+        '      <h3 class="text-xs font-bold uppercase tracking-wider text-slate-800 flex items-center space-x-1.5 mb-2">' +
+        '        <i data-lucide="bandage" class="w-4 h-4 text-teal-700"></i>' +
+        '        <span>Dressing, Bolster & Meds</span>' +
+        '      </h3>' +
+        '      <div class="text-xs text-slate-800 leading-relaxed">' + formatBulletList(c.Dressing_Meds_Bolster) + '</div>' +
+        '    </div>' +
+        '  </div>' +
+        '</div>';
 
       lucide.createIcons();
 
@@ -578,8 +578,10 @@
 
     function formatBulletList(text) {
       if (!text) return '<span class="text-slate-400 italic">None specified</span>';
-      const items = text.split("|").map(s => s.trim()).filter(Boolean);
-      return `<ul class="space-y-1">` + items.map(it => `<li class="flex items-start"><span class="text-teal-600 mr-1.5 font-bold">•</span><span>${it}</span></li>`).join("") + `</ul>`;
+      const items = text.split("|").map(function(s) { return s.trim(); }).filter(Boolean);
+      return '<ul class="space-y-1">' + items.map(function(it) {
+        return '<li class="flex items-start"><span class="text-teal-600 mr-1.5 font-bold">•</span><span>' + it + '</span></li>';
+      }).join("") + '</ul>';
     }
 
     function printCurrentCard() {
@@ -592,56 +594,62 @@
       const container = document.getElementById("printAllContainer");
       container.innerHTML = "";
 
-      binderCases.forEach(c => {
-        const linkedCards = caseCards.filter(cc => cc.Case_ID === c.Case_ID).map(cc => cc.Card_Number);
+      binderCases.forEach(function(c) {
+        const linkedCards = caseCards.filter(function(cc) { return cc.Case_ID === c.Case_ID; }).map(function(cc) { return cc.Card_Number; });
         const packMeta = packsCatalog[c.Assigned_Pack_ID] || { Pack_Name: c.Assigned_Pack_ID };
-        const myTrays = caseTrays.filter(ct => ct.Case_ID === c.Case_ID).map(ct => ({ ...ct, ...(traysCatalog[ct.Tray_ID] || { Tray_Name: ct.Tray_ID }) }));
-        const myDisps = caseDisposables.filter(cd => cd.Case_ID === c.Case_ID).map(cd => ({ ...cd, ...(disposablesCatalog[cd.Item_ID] || { Item_Name: cd.Item_ID }) }));
+        const myTrays = caseTrays.filter(function(ct) { return ct.Case_ID === c.Case_ID; }).map(function(ct) {
+          return Object.assign({}, ct, (traysCatalog[ct.Tray_ID] || { Tray_Name: ct.Tray_ID }));
+        });
+        const myDisps = caseDisposables.filter(function(cd) { return cd.Case_ID === c.Case_ID; }).map(function(cd) {
+          return Object.assign({}, cd, (disposablesCatalog[cd.Item_ID] || { Item_Name: cd.Item_ID }));
+        });
 
-        const cardHtml = `
-          <div class="print-case-card mb-8">
-            <div class="print-header p-3 flex justify-between items-center text-white mb-3">
-              <div>
-                <span class="font-extrabold uppercase text-xs tracking-wider bg-teal-700 px-2 py-0.5 rounded mr-2">${c.Case_Code || c.Case_ID}</span>
-                <span class="text-base font-bold">${c.Case_Name}</span>
-                <span class="text-xs text-slate-300 ml-3">Dr. Figler (216-339-0230) | Cards: ${linkedCards.join(", ") || "None"}</span>
-              </div>
-              <div class="text-xs font-semibold">Updated: ${c.Date_Updated || 'Recent'}</div>
-            </div>
+        const traysPrint = myTrays.map(function(t) { return '<div>• ' + t.Tray_Name + ' (' + t.Status + ')</div>'; }).join('');
+        const dispsPrint = myDisps.map(function(d) { return '<div>• ' + d.Item_Name + ' (' + d.Status + ')</div>'; }).join('');
 
-            <div class="print-grid">
-              <div class="print-box">
-                <h4 class="font-bold uppercase text-[9pt] text-red-900 border-b pb-1 mb-1">Pre-Incision Critical Steps</h4>
-                <div class="text-[8.5pt] leading-tight">${formatBulletList(c.Pre_Incision_Critical_Steps)}</div>
-              </div>
-              <div class="print-box">
-                <h4 class="font-bold uppercase text-[9pt] text-slate-800 border-b pb-1 mb-1">Bed / Position / Drapes</h4>
-                <div class="text-[8.5pt] leading-tight">${formatBulletList(c.Bed_Position_Drapes)}</div>
-              </div>
-              <div class="print-box">
-                <h4 class="font-bold uppercase text-[9pt] text-teal-950 border-b pb-1 mb-1">Base Pack & Trays</h4>
-                <div class="text-[8.5pt] font-bold text-teal-900 mb-1">Pack: ${packMeta.Pack_Name} Pack</div>
-                <div class="text-[8pt] leading-tight">${myTrays.map(t => `<div>• ${t.Tray_Name} (${t.Status})</div>`).join("")}</div>
-              </div>
-              <div class="print-box">
-                <h4 class="font-bold uppercase text-[9pt] text-emerald-900 border-b pb-1 mb-1">Mayo Stand Setup</h4>
-                <div class="text-[8.5pt] leading-tight">${formatBulletList(c.Mayo_1_Setup)}</div>
-              </div>
-              <div class="print-box">
-                <h4 class="font-bold uppercase text-[9pt] text-slate-800 border-b pb-1 mb-1">Circulator & Settings</h4>
-                <div class="text-[8.5pt] leading-tight">${formatBulletList(c.Circulator_Energy_Notes)}</div>
-              </div>
-              <div class="print-box col-span-2">
-                <h4 class="font-bold uppercase text-[9pt] text-teal-900 border-b pb-1 mb-1">Disposables & Sutures</h4>
-                <div class="text-[8pt] leading-tight grid grid-cols-2 gap-1">${myDisps.map(d => `<div>• ${d.Item_Name} (${d.Status})</div>`).join("")}</div>
-              </div>
-              <div class="print-box">
-                <h4 class="font-bold uppercase text-[9pt] text-slate-800 border-b pb-1 mb-1">Dressing & Meds</h4>
-                <div class="text-[8.5pt] leading-tight">${formatBulletList(c.Dressing_Meds_Bolster)}</div>
-              </div>
-            </div>
-          </div>
-        `;
+        const cardHtml = 
+          '<div class="print-case-card mb-8">' +
+          '  <div class="print-header p-3 flex justify-between items-center text-white mb-3">' +
+          '    <div>' +
+          '      <span class="font-extrabold uppercase text-xs tracking-wider bg-teal-700 px-2 py-0.5 rounded mr-2">' + (c.Case_Code || c.Case_ID) + '</span>' +
+          '      <span class="text-base font-bold">' + c.Case_Name + '</span>' +
+          '      <span class="text-xs text-slate-300 ml-3">Dr. Figler (216-339-0230) | Cards: ' + (linkedCards.join(", ") || "None") + '</span>' +
+          '    </div>' +
+          '    <div class="text-xs font-semibold">Updated: ' + (c.Date_Updated || 'Recent') + '</div>' +
+          '  </div>' +
+          '  <div class="print-grid">' +
+          '    <div class="print-box">' +
+          '      <h4 class="font-bold uppercase text-[9pt] text-red-900 border-b pb-1 mb-1">Pre-Incision Critical Steps</h4>' +
+          '      <div class="text-[8.5pt] leading-tight">' + formatBulletList(c.Pre_Incision_Critical_Steps) + '</div>' +
+          '    </div>' +
+          '    <div class="print-box">' +
+          '      <h4 class="font-bold uppercase text-[9pt] text-slate-800 border-b pb-1 mb-1">Bed / Position / Drapes</h4>' +
+          '      <div class="text-[8.5pt] leading-tight">' + formatBulletList(c.Bed_Position_Drapes) + '</div>' +
+          '    </div>' +
+          '    <div class="print-box">' +
+          '      <h4 class="font-bold uppercase text-[9pt] text-teal-950 border-b pb-1 mb-1">Base Pack & Trays</h4>' +
+          '      <div class="text-[8.5pt] font-bold text-teal-900 mb-1">Pack: ' + packMeta.Pack_Name + ' Pack</div>' +
+          '      <div class="text-[8pt] leading-tight">' + traysPrint + '</div>' +
+          '    </div>' +
+          '    <div class="print-box">' +
+          '      <h4 class="font-bold uppercase text-[9pt] text-emerald-900 border-b pb-1 mb-1">Mayo Stand Setup</h4>' +
+          '      <div class="text-[8.5pt] leading-tight">' + formatBulletList(c.Mayo_1_Setup) + '</div>' +
+          '    </div>' +
+          '    <div class="print-box">' +
+          '      <h4 class="font-bold uppercase text-[9pt] text-slate-800 border-b pb-1 mb-1">Circulator & Settings</h4>' +
+          '      <div class="text-[8.5pt] leading-tight">' + formatBulletList(c.Circulator_Energy_Notes) + '</div>' +
+          '    </div>' +
+          '    <div class="print-box col-span-2">' +
+          '      <h4 class="font-bold uppercase text-[9pt] text-teal-900 border-b pb-1 mb-1">Disposables & Sutures</h4>' +
+          '      <div class="text-[8pt] leading-tight grid grid-cols-2 gap-1">' + dispsPrint + '</div>' +
+          '    </div>' +
+          '    <div class="print-box">' +
+          '      <h4 class="font-bold uppercase text-[9pt] text-slate-800 border-b pb-1 mb-1">Dressing & Meds</h4>' +
+          '      <div class="text-[8.5pt] leading-tight">' + formatBulletList(c.Dressing_Meds_Bolster) + '</div>' +
+          '    </div>' +
+          '  </div>' +
+          '</div>';
+
         container.innerHTML += cardHtml;
       });
 
@@ -649,7 +657,7 @@
       container.classList.remove("hidden");
       window.print();
 
-      setTimeout(() => {
+      setTimeout(function() {
         container.classList.add("hidden");
         document.getElementById("singleCardWrapper").classList.remove("hidden");
       }, 500);
@@ -659,79 +667,67 @@
       document.getElementById("modalCardNumber").innerText = cardNumber;
       
       const cleanCard = cardNumber.trim().toUpperCase();
-      const cardMeta = preferenceCards.find(x => x.Card_Number && x.Card_Number.trim().toUpperCase() === cleanCard);
+      const cardMeta = preferenceCards.find(function(x) { return x.Card_Number && x.Card_Number.trim().toUpperCase() === cleanCard; });
       const title = document.getElementById("modalCardTitle");
       title.innerText = cardMeta ? cardMeta.Card_Name : ("Preference Card " + cardNumber);
 
-      const traysForCard = cardTrays.filter(ct => ct.Card_Number && ct.Card_Number.trim().toUpperCase() === cleanCard).map(ct => {
-        return { ...ct, ...(traysCatalog[ct.Tray_ID] || { Tray_Name: ct.Tray_ID }) };
+      const traysForCard = cardTrays.filter(function(ct) { return ct.Card_Number && ct.Card_Number.trim().toUpperCase() === cleanCard; }).map(function(ct) {
+        return Object.assign({}, ct, (traysCatalog[ct.Tray_ID] || { Tray_Name: ct.Tray_ID }));
       });
 
-      const dispsForCard = cardDisposables.filter(cd => cd.Card_Number && cd.Card_Number.trim().toUpperCase() === cleanCard).map(cd => {
-        return { ...cd, ...(disposablesCatalog[cd.Item_ID] || { Item_Name: cd.Item_ID }) };
+      const dispsForCard = cardDisposables.filter(function(cd) { return cd.Card_Number && cd.Card_Number.trim().toUpperCase() === cleanCard; }).map(function(cd) {
+        return Object.assign({}, cd, (disposablesCatalog[cd.Item_ID] || { Item_Name: cd.Item_ID }));
       });
 
-      const content = document.getElementById("modalCardContent");
+      let traysHtml = '';
+      if (traysForCard.length > 0) {
+        const trayItems = traysForCard.map(function(t) {
+          const badgeClass = t.Status === 'Open' ? 'text-emerald-700 bg-emerald-50 border border-emerald-200' : 'text-amber-700 bg-amber-50 border border-amber-200';
+          return '<div class="flex items-center justify-between bg-white p-2 rounded-lg border border-slate-200 shadow-xs">' +
+                 '  <div><span class="font-bold text-slate-800 block">' + (t.Tray_Name || '') + '</span><span class="text-[10px] text-slate-400">' + (t.Bin_Location || 'Core') + '</span></div>' +
+                 '  <span class="text-[10px] font-bold ' + badgeClass + ' px-1.5 py-0.5 rounded">' + (t.Status || 'Required') + '</span>' +
+                 '</div>';
+        }).join('');
 
-      content.innerHTML = `
-        <div class="space-y-5 text-xs">
-          ${traysForCard.length > 0 ? `
-          <div class="p-3.5 rounded-xl border border-slate-200 bg-slate-50">
-            <h4 class="font-bold uppercase tracking-wider text-slate-800 text-[11px] mb-2 flex items-center space-x-1.5">
-              <i data-lucide="scissors" class="w-4 h-4 text-teal-700"></i>
-              <span>Sterile Instrument Trays (${traysForCard.length})</span>
-            </h4>
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
-              ${traysForCard.map(t => `
-                <div class="flex items-center justify-between bg-white p-2 rounded-lg border border-slate-200 shadow-2xs">
-                  <div>
-                    <span class="font-bold text-slate-800 block">${t.Tray_Name}</span>
-                    <span class="text-[10px] text-slate-400">${t.Bin_Location || 'Core'}</span>
-                  </div>
-                  <span class="text-[10px] font-bold ${t.Status === 'Open' ? 'text-emerald-700 bg-emerald-50 border border-emerald-200' : 'text-amber-700 bg-amber-50 border border-amber-200'} px-1.5 py-0.5 rounded">
-                    ${t.Status || 'Required'}
-                  </span>
-                </div>
-              `).join("")}
-            </div>
-          </div>` : ''}
+        traysHtml = '<div class="p-3.5 rounded-xl border border-slate-200 bg-slate-50">' +
+                    '  <h4 class="font-bold uppercase tracking-wider text-slate-800 text-[11px] mb-2 flex items-center space-x-1.5">' +
+                    '    <i data-lucide="scissors" class="w-4 h-4 text-teal-700"></i>' +
+                    '    <span>Sterile Instrument Trays (' + traysForCard.length + ')</span>' +
+                    '  </h4>' +
+                    '  <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">' + trayItems + '</div>' +
+                    '</div>';
+      }
 
-          ${dispsForCard.length > 0 ? `
-          <div>
-            <h4 class="font-bold uppercase tracking-wider text-slate-700 mb-2 flex items-center space-x-1.5">
-              <i data-lucide="package" class="w-4 h-4 text-teal-700"></i>
-              <span>Warehouse Pick Ticket Supplies (${dispsForCard.length})</span>
-            </h4>
-            <div class="border rounded-xl overflow-hidden shadow-2xs">
-              <table class="w-full text-left border-collapse">
-                <thead class="bg-slate-50 border-b border-slate-200 text-slate-600 font-bold uppercase text-[10px]">
-                  <tr>
-                    <th class="py-2 px-3">Pull / Open / PRN</th>
-                    <th class="py-2 px-3">Description</th>
-                    <th class="py-2 px-3">Item #</th>
-                    <th class="py-2 px-3">Lawson #</th>
-                    <th class="py-2 px-3">Unit</th>
-                    <th class="py-2 px-3">Bin Location</th>
-                  </tr>
-                </thead>
-                <tbody class="divide-y divide-slate-100 text-slate-800">
-                  ${dispsForCard.map(d => `
-                    <tr class="hover:bg-slate-50">
-                      <td class="py-1.5 px-3 font-mono font-bold text-teal-800">${d.Pull_Qty || 1} / ${d.Open_Qty || 0} / ${d.PRN_Qty || 0}</td>
-                      <td class="py-1.5 px-3 font-medium">${d.Item_Name}</td>
-                      <td class="py-1.5 px-3 font-mono text-slate-600 font-bold">${d.Item_Number || '-'}</td>
-                      <td class="py-1.5 px-3 font-mono text-slate-500">${d.Lawson_Number || '-'}</td>
-                      <td class="py-1.5 px-3 font-mono text-slate-500">${d.Unit || 'EA'}</td>
-                      <td class="py-1.5 px-3 text-slate-500">${d.Bin_Location || 'Warehouse'}</td>
-                    </tr>
-                  `).join("")}
-                </tbody>
-              </table>
-            </div>
-          </div>` : ''}
-        </div>
-      `;
+      let dispsHtml = '';
+      if (dispsForCard.length > 0) {
+        const tableRows = dispsForCard.map(function(d) {
+          return '<tr class="hover:bg-slate-50">' +
+                 '  <td class="py-1.5 px-3 font-mono font-bold text-teal-800">' + (d.Pull_Qty || 1) + ' / ' + (d.Open_Qty || 0) + ' / ' + (d.PRN_Qty || 0) + '</td>' +
+                 '  <td class="py-1.5 px-3 font-medium">' + (d.Item_Name || '') + '</td>' +
+                 '  <td class="py-1.5 px-3 font-mono text-slate-600 font-bold">' + (d.Item_Number || '-') + '</td>' +
+                 '  <td class="py-1.5 px-3 font-mono text-slate-500">' + (d.Lawson_Number || '-') + '</td>' +
+                 '  <td class="py-1.5 px-3 font-mono text-slate-500">' + (d.Unit || 'EA') + '</td>' +
+                 '  <td class="py-1.5 px-3 text-slate-500">' + (d.Bin_Location || 'Warehouse') + '</td>' +
+                 '</tr>';
+        }).join('');
 
+        dispsHtml = '<div>' +
+                    '  <h4 class="font-bold uppercase tracking-wider text-slate-700 mb-2 flex items-center space-x-1.5">' +
+                    '    <i data-lucide="package" class="w-4 h-4 text-teal-700"></i>' +
+                    '    <span>Warehouse Pick Ticket Supplies (' + dispsForCard.length + ')</span>' +
+                    '  </h4>' +
+                    '  <div class="border rounded-xl overflow-hidden shadow-xs">' +
+                    '    <table class="w-full text-left border-collapse">' +
+                    '      <thead class="bg-slate-50 border-b border-slate-200 text-slate-600 font-bold uppercase text-[10px]">' +
+                    '        <tr><th class="py-2 px-3">Pull / Open / PRN</th><th class="py-2 px-3">Description</th><th class="py-2 px-3">Item #</th><th class="py-2 px-3">Lawson #</th><th class="py-2 px-3">Unit</th><th class="py-2 px-3">Bin Location</th></tr>' +
+                    '      </thead>' +
+                    '      <tbody class="divide-y divide-slate-100 text-slate-800">' + tableRows + '</tbody>' +
+                    '    </table>' +
+                    '  </div>' +
+                    '</div>';
+      }
+
+      document.getElementById("modalCardContent").innerHTML = '<div class="space-y-5 text-xs">' + traysHtml + dispsHtml + '</div>';
       document.getElementById("prefCardModal").classList.remove("hidden");
       lucide.createIcons();
     }
