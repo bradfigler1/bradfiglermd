@@ -242,7 +242,7 @@
       const err = document.getElementById("passError");
       const authScreen = document.getElementById("authScreen");
 
-      if (VALID_PASSCODES.includes(entered)) {
+      if (VALID_PASSCODES.indexOf(entered) !== -1) {
         localStorage.setItem("figler_binder_auth", "true");
         if (authScreen) authScreen.style.display = "none";
         if (err) err.style.display = "none";
@@ -397,6 +397,18 @@
       renderSingleCard(caseId);
     }
 
+    function triggerPrefCard(btn) {
+      if (btn && btn.dataset && btn.dataset.card) {
+        openPrefCardModal(btn.dataset.card);
+      }
+    }
+
+    function triggerQR(box) {
+      if (box && box.dataset && box.dataset.caseId) {
+        openQRModal(box.dataset.caseId, box.dataset.caseName || "");
+      }
+    }
+
     function renderSingleCard(caseId) {
       const c = binderCases.find(function(x) { return x.Case_ID === caseId; }) || binderCases[0];
       if (!c) return;
@@ -405,7 +417,7 @@
 
       const linkedCards = caseCards.filter(function(cc) { return cc.Case_ID === c.Case_ID; }).map(function(cc) { return cc.Card_Number; });
       const prefCardBadges = linkedCards.map(function(p) {
-        return '<button onclick="openPrefCardModal('' + p + '')" class="px-2 py-0.5 rounded-lg text-xs font-bold bg-teal-100 text-teal-900 hover:bg-teal-200 border border-teal-300 flex items-center space-x-1 transition">' +
+        return '<button type="button" data-card="' + p + '" onclick="triggerPrefCard(this)" class="px-2 py-0.5 rounded-lg text-xs font-bold bg-teal-100 text-teal-900 hover:bg-teal-200 border border-teal-300 flex items-center space-x-1 transition">' +
                '  <i data-lucide="clipboard-list" class="w-3.5 h-3.5"></i>' +
                '  <span>Card: ' + p + '</span>' +
                '</button>';
@@ -468,6 +480,8 @@
                '</div>';
       }).join('');
 
+      const safeCaseName = (c.Case_Name || "").replace(/"/g, '&quot;');
+
       container.innerHTML = 
         '<div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden print-case-card">' +
         '  <div class="bg-slate-900 text-white p-4 sm:p-5 flex flex-col md:flex-row justify-between items-start md:items-center gap-3 print-header">' +
@@ -486,7 +500,7 @@
         '      </div>' +
         '    </div>' +
         '    <div class="self-end md:self-center flex items-center space-x-3">' +
-        '      <div onclick="openQRModal('' + c.Case_ID + '', '' + c.Case_Name.replace(/'/g, "\'") + '')" class="bg-white p-1.5 rounded-xl cursor-pointer hover:shadow-md transition flex flex-col items-center shrink-0" title="Scan to open on phone">' +
+        '      <div data-case-id="' + c.Case_ID + '" data-case-name="' + safeCaseName + '" onclick="triggerQR(this)" class="bg-white p-1.5 rounded-xl cursor-pointer hover:shadow-md transition flex flex-col items-center shrink-0" title="Scan to open on phone">' +
         '        <div id="cardQrCode_' + c.Case_ID + '" class="w-14 h-14 flex items-center justify-center"></div>' +
         '        <span class="text-[9px] font-bold text-slate-800 tracking-tight mt-0.5">PHONE SCAN</span>' +
         '      </div>' +
